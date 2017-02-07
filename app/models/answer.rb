@@ -1,5 +1,5 @@
 class Answer < ApplicationRecord
   belongs_to :question, dependent: :destroy
 
-  validates :body, presence: true
+  validates :body, :question_id, presence: true
 end
