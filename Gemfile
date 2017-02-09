@@ -32,6 +32,10 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'slim-rails'
 gem 'rails-controller-testing'
+gem 'devise'
+gem 'twitter-bootstrap-rails'
+gem 'therubyracer'
+
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -51,11 +55,13 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'rubocop'
+  gem 'letter_opener'
 end
 
 group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
+  gem 'launchy'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
