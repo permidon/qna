@@ -1,0 +1,11 @@
+h1 = @question.title
+p = @question.body
+
+- if @question.answers.empty?
+    p No answers
+- else
+  - @question.answers.each do |answer|
+    ul
+      li = answer.body
+
+p= link_to 'To Answer', new_question_answer_path(@question)
