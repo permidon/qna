@@ -1,1 +1,14 @@
+h1 All questions
+
+table
+  thead
+    tr
+      td Answers
+      td Questions
+  tbody
+    - @questions.each do |question|
+      tr
+        td.answers = question.answers.count
+        td.title = link_to "#{question.title}", question_path(question)
+
 p= link_to 'Ask question', new_question_path
