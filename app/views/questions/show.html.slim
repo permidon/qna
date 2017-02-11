@@ -5,7 +5,11 @@ p = @question.body
     p No answers
 - else
   - @question.answers.each do |answer|
-    ul
-      li = answer.body
+    table
+      tr
+        td = answer.body
 
-p= link_to 'To Answer', new_question_answer_path(@question)
+div = form_for [@question, @answer] do |f|
+  p = f.label :body, "Answer:"
+  p = f.text_area :body
+  = f.submit 'Create'
