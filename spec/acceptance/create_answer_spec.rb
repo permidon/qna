@@ -17,7 +17,7 @@ feature 'Create answer', %q{
     fill_in 'Answer', with: answer.body
     click_on 'Create'
 
-    expect(page).to have_content answer.body
+    expect(page).to have_content 'The answer has been successfully created.'
   end
 
   scenario 'Non-authenticated user creates a answer' do
@@ -25,7 +25,6 @@ feature 'Create answer', %q{
     fill_in 'Answer', with: answer.body
     click_on 'Create'
 
-    save_and_open_page
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 end

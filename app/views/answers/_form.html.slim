@@ -1,0 +1,4 @@
+div = form_for [@question, @answer] do |f|
+  p = f.label :body, "Answer:"
+  p = f.text_area :body
+  = f.submit 'Create'
