@@ -27,11 +27,11 @@ feature 'Delete question', %q{
     sign_in(bad_user)
 
     visit question_path(question)
-    expect(page).to have_no_content 'Delete question'
+    expect(page).to have_no_link 'Delete question'
   end
 
   scenario 'Non-authenticated user deletes a question' do
     visit question_path(question)
-    expect(page).to have_no_content 'Delete question'
+    expect(page).to have_no_link 'Delete question'
   end
 end

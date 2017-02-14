@@ -1,20 +1,20 @@
-div style="margin-left: auto; margin-right: auto"
-  h2.page-title style="text-align: center" = @question.title
-  p = @question.body
-  - if user_signed_in? && current_user.author_of?(@question)
-      p = link_to 'Delete question', @question, method: :delete, class: 'btn btn-danger btn-sm'
+.container.page-content
+  .row
+    .span12
+      .box-container
+        div style="margin-left: auto; margin-right: auto"
+          h2.page-title style="text-align: center" = @question.title
+          h3 = @question.body
+          - if user_signed_in? && current_user.author_of?(@question)
+            = link_to 'Delete question', @question, method: :delete
+br
 
-  br
-
-  - if @question.answers.empty?
-      p No answers
-  - else
+table.table.table-condensed
+  tbody
     - @question.answers.each do |answer|
-      table
-        tr
-          td = answer.body
-          td
-            - if user_signed_in? && current_user.author_of?(answer)
-              = link_to 'Delete answer', answer_path(answer), method: :delete, class: 'btn btn-danger btn-xs'
+      - if answer.persisted?
+          tr
+            td = answer.body
+            td = link_to 'Delete answer', answer_path(answer), method: 'delete' if user_signed_in? && current_user.author_of?(answer)
 
-  = render 'answers/form'
+= render 'answers/form'
