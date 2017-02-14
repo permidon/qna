@@ -1,8 +1,8 @@
 div style="margin-left: auto; margin-right: auto"
   h2.page-title style="text-align: center" = @question.title
   p = @question.body
-  - if @question.user == current_user
-      p = link_to 'Delete question', question_path(@question), method: :delete, class: 'btn btn-danger btn-sm'
+  - if user_signed_in? && current_user.author_of?(@question)
+      p = link_to 'Delete question', @question, method: :delete, class: 'btn btn-danger btn-sm'
 
   br
 
@@ -14,7 +14,7 @@ div style="margin-left: auto; margin-right: auto"
         tr
           td = answer.body
           td
-            - if answer.user == current_user
+            - if user_signed_in? && current_user.author_of?(answer)
               = link_to 'Delete answer', answer_path(answer), method: :delete, class: 'btn btn-danger btn-xs'
 
   = render 'answers/form'

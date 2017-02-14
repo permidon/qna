@@ -17,17 +17,15 @@ class QuestionsController < ApplicationController
   def create
     @question = current_user.questions.new(question_params)
     if @question.save
-      flash[:notice] = 'The question has been successfully created.'
-      redirect_to @question
+      redirect_to @question, notice: 'The question has been successfully created.'
     else
       render :new
     end
   end
 
   def destroy
-    @question.destroy if current_user == @question.user
-    flash[:notice] = 'The question has been successfully deleted.'
-    redirect_to questions_path
+    @question.destroy if current_user.author_of?(@question)
+    redirect_to questions_path, notice: 'The question has been successfully deleted.'
   end
 
   private
@@ -37,6 +35,6 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, :user_id)
+    params.require(:question).permit(:title, :body)
   end
 end

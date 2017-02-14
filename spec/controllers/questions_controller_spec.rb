@@ -53,26 +53,13 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'user is not signed in' do
-      context 'with valid attributes' do
-        it 'does not save the new question in the database' do
-          expect { post :create, params: { question: attributes_for(:question) } }.to_not change(Question, :count)
-        end
-
-        it 'redirect to sign in page' do
-          post :create, params: { question: attributes_for(:question) }
-          expect(response).to redirect_to new_user_session_path
-        end
+      it 'does not save the new question in the database' do
+        expect { post :create, params: { question: attributes_for(:question) } }.to_not change(Question, :count)
       end
 
-      context 'with invalid attributes' do
-        it 'does not save the new question in the database' do
-          expect { post :create, params: { question: attributes_for(:invalid_question) } }.to_not change(Question, :count)
-        end
-
-        it 'redirect to sign in page' do
-          post :create, params: { question: attributes_for(:invalid_question) }
-          expect(response).to redirect_to new_user_session_path
-        end
+      it 'redirect to sign in page' do
+        post :create, params: { question: attributes_for(:question) }
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end

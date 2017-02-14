@@ -12,8 +12,7 @@ class AnswersController < ApplicationController
     @answer.user = current_user
 
     if @answer.save
-      flash[:notice] = 'The answer has been successfully created.'
-      redirect_to @question
+      redirect_to @question, notice: 'The answer has been successfully created.'
     else
       render :new
     end
@@ -23,9 +22,8 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer.destroy if current_user == @answer.user
-    flash[:notice] = 'The answer has been successfully deleted.'
-    redirect_to @answer.question
+    @answer.destroy if current_user.author_of?(@answer)
+    redirect_to @answer.question, notice: 'The answer has been successfully deleted.'
   end
 
   private

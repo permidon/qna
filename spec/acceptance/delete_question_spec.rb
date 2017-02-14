@@ -19,6 +19,8 @@ feature 'Delete question', %q{
     click_on 'Delete question'
 
     expect(page).to have_content 'The question has been successfully deleted.'
+    expect(current_path).to eq questions_path
+    expect(page).to have_no_content question.title
   end
 
   scenario 'Authenticated user deletes other question' do

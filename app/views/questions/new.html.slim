@@ -5,6 +5,7 @@
         div style="margin-left: auto; margin-right: auto; width: 16em"
           h2.page-title style="text-align: center"New Question
           = form_for @question do |f|
+            = render 'common/errors', resource: @question
             p = f.label :title
             p = f.text_field :title
             p = f.label :body
