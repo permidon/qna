@@ -94,7 +94,7 @@ feature 'User sign up', %q{
 
     visit new_user_registration_path
 
-    expect(page).to have_content 'Sign Out You are already signed in'
+    expect(page).to have_content 'You are already signed in'
     expect(current_path).to eq root_path
   end
 end

@@ -1,19 +1,20 @@
-h1 = @question.title
-p = @question.body
-- if @question.user == current_user
-    p = link_to 'Delete question', question_path(@question), method: :delete
+div style="margin-left: auto; margin-right: auto"
+  h2.page-title style="text-align: center" = @question.title
+  p = @question.body
+  - if @question.user == current_user
+      p = link_to 'Delete question', question_path(@question), method: :delete, class: 'btn btn-danger btn-sm'
 
-br
+  br
 
-- if @question.answers.empty?
-    p No answers
-- else
-  - @question.answers.each do |answer|
-    table
-      tr
-        td = answer.body
-        td
-          - if answer.user == current_user
-            = link_to 'Delete answer', answer_path(answer), method: :delete
+  - if @question.answers.empty?
+      p No answers
+  - else
+    - @question.answers.each do |answer|
+      table
+        tr
+          td = answer.body
+          td
+            - if answer.user == current_user
+              = link_to 'Delete answer', answer_path(answer), method: :delete, class: 'btn btn-danger btn-xs'
 
-= render 'answers/form'
+  = render 'answers/form'

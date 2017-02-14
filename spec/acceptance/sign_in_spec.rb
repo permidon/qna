@@ -30,7 +30,7 @@ feature 'User sign in', %q{
     fill_in 'Password', with: nil
     click_on 'Log in'
 
-    expect(page).to have_content 'Sign In Invalid Email or password'
+    expect(page).to have_content 'Invalid Email or password'
     expect(current_path).to eq new_user_session_path
   end
 
@@ -39,7 +39,7 @@ feature 'User sign in', %q{
 
     visit new_user_session_path
 
-    expect(page).to have_content 'Sign Out You are already signed in'
+    expect(page).to have_content 'You are already signed in'
     expect(current_path).to eq root_path
   end
 end

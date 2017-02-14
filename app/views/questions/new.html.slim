@@ -1,6 +1,12 @@
-= form_for @question do |f|
-  p = f.label :title
-  p = f.text_field :title
-  p = f.label :body
-  p = f.text_area :body
-  = f.submit 'Create'
+.container.page-content
+  .row
+    .span12
+      .box-container
+        div style="margin-left: auto; margin-right: auto; width: 16em"
+          h2.page-title style="text-align: center"New Question
+          = form_for @question do |f|
+            p = f.label :title
+            p = f.text_field :title
+            p = f.label :body
+            p = f.text_area :body
+            = f.submit 'Create', class: 'btn btn-default'
