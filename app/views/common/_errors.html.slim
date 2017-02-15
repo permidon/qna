@@ -1,0 +1,7 @@
+-if resource.errors.any?
+  div id="error_explanation"
+    h4 Prohibited this resource from being saved:
+    = pluralize(resource.errors.count, "error")
+    ul
+      - resource.errors.full_messages.each do |message|
+        li= message

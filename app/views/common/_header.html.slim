@@ -1,0 +1,16 @@
+header
+  .navbar.navbar-default.navbar-static-top
+    .container
+      button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse"
+        span.icon-bar
+        span.icon-bar
+
+      = link_to 'Questions & Answers', questions_path, class: 'navbar-brand'
+      .navbar-collapse.collapse.navbar-responsive-collapse
+        ul.nav.navbar-nav.inline.pull-right
+          -if user_signed_in?
+            li= link_to "Sign Out", destroy_user_session_path, :method => :delete
+          -else
+            li= link_to "Sign In", new_user_session_path
+
+
