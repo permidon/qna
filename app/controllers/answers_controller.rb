@@ -9,14 +9,20 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: 'The answer has been successfully created.'
     else
+      flash[:error] = 'The answer can not be created.'
       render "questions/show"
     end
   end
 
   def destroy
     @answer = Answer.find(params[:id])
-    @answer.destroy if current_user.author_of?(@answer)
-    redirect_to @answer.question, notice: 'The answer has been successfully deleted.'
+    if current_user.author_of?(@answer)
+      @answer.destroy
+      flash[:notice] ='The answer has been successfully deleted.'
+    else
+      flash[:alert] ='You can not delete this answer.'
+    end
+    redirect_to @answer.question
   end
 
   private

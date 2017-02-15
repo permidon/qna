@@ -19,13 +19,20 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to @question, notice: 'The question has been successfully created.'
     else
+      flash[:error] = 'The question can not be created.'
       render :new
     end
   end
 
   def destroy
-    @question.destroy if current_user.author_of?(@question)
-    redirect_to questions_path, notice: 'The question has been successfully deleted.'
+    if current_user.author_of?(@question)
+      @question.destroy
+      flash[:notice] ='The question has been successfully deleted.'
+    else
+      flash[:alert] ='You can not delete this question.'
+    end
+    redirect_to questions_path
+
   end
 
   private
