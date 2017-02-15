@@ -1,5 +1,5 @@
-div = form_for [@question, @answer] do |f|
+div= form_for [@question, @answer] do |f|
   = render 'common/errors', resource: @answer
-  p = f.label :body, "Answer:"
-  p = f.text_area :body
+  p= f.label :body, "Answer:"
+  p= f.text_area :body
   = f.submit 'Create', class: 'btn btn-info btn-sm'

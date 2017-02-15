@@ -19,7 +19,9 @@ feature 'Create answer', %q{
 
     expect(page).to have_content 'The answer has been successfully created.'
     expect(current_path).to eq question_path(question)
-    expect(page).to have_content answer.body
+    within '.answers' do
+      expect(page).to have_content answer.body
+    end
   end
 
   scenario 'Authenticated user creates an answer with invalid attributes' do
@@ -30,7 +32,9 @@ feature 'Create answer', %q{
     click_on 'Create'
 
     expect(page).to have_content 'Body can\'t be blank'
-    expect(page).to have_no_content answer.body
+    within '.answers' do
+      expect(page).to have_no_content answer.body
+    end
   end
 
   scenario 'Non-authenticated user creates an answer' do

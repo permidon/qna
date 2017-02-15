@@ -6,8 +6,8 @@
           h2.page-title style="text-align: center"New Question
           = form_for @question do |f|
             = render 'common/errors', resource: @question
-            p = f.label :title
-            p = f.text_field :title
-            p = f.label :body
-            p = f.text_area :body
+            p= f.label :title
+            p= f.text_field :title
+            p= f.label :body
+            p= f.text_area :body
             = f.submit 'Create', class: 'btn btn-default'
