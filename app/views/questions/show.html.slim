@@ -9,13 +9,7 @@
             = link_to 'Delete question', @question, method: :delete
 br
 
-table.table.table-condensed.answers
-  tbody
-    - @question.answers.each do |answer|
-      - if answer.persisted?
-          tr
-            td= answer.body
-            - if user_signed_in? && current_user.author_of?(answer)
-              td= link_to 'Delete answer', answer_path(answer), method: :delete, class: 'pull-right'
+.answers
+  = render 'answers'
 
 = render 'answers/form'

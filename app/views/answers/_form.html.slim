@@ -1,4 +1,4 @@
-div= form_for [@question, @answer] do |f|
+div= form_for [@question, @answer], remote: true do |f|
   = render 'common/errors', resource: @answer
   p= f.label :body, "Answer:"
   p= f.text_area :body
