@@ -47,7 +47,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirect to sign in page' do
         post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
-        expect(response).to have_http_status(:unauthorized)
+        expect(response).to have_http_status(401)
       end
     end
   end
