@@ -15,8 +15,8 @@ feature 'Create answer', %q{
 
     visit question_path(question)
 
-    fill_in 'Answer', with: answer.body
-    click_on 'Create'
+    fill_in 'Your Answer', with: answer.body
+    click_on 'Post Your Answer'
 
     expect(current_path).to eq question_path(question)
     within '.answers' do
@@ -28,8 +28,8 @@ feature 'Create answer', %q{
     sign_in(user)
 
     visit question_path(question)
-    fill_in 'Answer', with: nil
-    click_on 'Create'
+    fill_in 'Your Answer', with: nil
+    click_on 'Your Answer'
 
     expect(current_path).to eq question_path(question)
     within '.answers' do
