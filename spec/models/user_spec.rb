@@ -12,21 +12,21 @@ RSpec.describe User, type: :model do
 
     context 'user_id and object_id are the same' do
       it "compares user_id and question_id" do
-        expect(author.author_of?(question)).to eq true
+        expect(author).to be_author_of(question)
       end
 
       it "compares user_id and answer_id" do
-        expect(author.author_of?(answer)).to eq true
+        expect(author).to be_author_of(answer)
       end
     end
 
     context 'user_id and object_id are different' do
       it "compares user_id and question_id" do
-        expect(user.author_of?(question)).to eq false
+        expect(user).to_not be_author_of(question)
       end
 
       it "compares user_id and answer_id" do
-        expect(user.author_of?(answer)).to eq false
+        expect(user).to_not be_author_of(answer)
       end
     end
   end

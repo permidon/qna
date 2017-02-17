@@ -13,7 +13,7 @@ feature 'Create question', %q{
     sign_in(user)
 
     visit questions_path
-    click_on 'Ask question'
+    click_on 'Ask Question'
     fill_in 'Title', with: question.title
     fill_in 'Body', with: question.body
     click_on 'Create'
@@ -27,7 +27,7 @@ feature 'Create question', %q{
     sign_in(user)
 
     visit questions_path
-    click_on 'Ask question'
+    click_on 'Ask Question'
     fill_in 'Title', with: nil
     fill_in 'Body', with: nil
     click_on 'Create'
@@ -40,7 +40,7 @@ feature 'Create question', %q{
 
   scenario 'Non-authenticated user creates a question' do
     visit questions_path
-    click_on 'Ask question'
+    click_on 'Ask Question'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
     expect(current_path).to eq new_user_session_path

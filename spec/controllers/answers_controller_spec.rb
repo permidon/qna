@@ -8,46 +8,46 @@ RSpec.describe AnswersController, type: :controller do
     context 'user is signed in' do
       sign_in_user
       it 'assigns the requested question to @question' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer) }
+        post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
         expect(assigns(:question)).to eq question
       end
 
       context 'with valid attributes' do
         it 'saves the new answer in the database' do
-          expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
+          expect { post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js } }.to change(question.answers, :count).by(1)
         end
 
         it 'assigns the new answer to the @user' do
-          post :create, params: { question_id: question, answer: attributes_for(:answer) }
+          post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
           expect(assigns(:answer).user).to eq @user
         end
 
-        it 'redirects to question view' do
-          post :create, params: { question_id: question, answer: attributes_for(:answer) }
-          expect(response).to redirect_to assigns(:question)
+        it 'render create template' do
+          post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
+          expect(response).to render_template :create
         end
       end
 
       context 'with invalid attributes' do
         it 'does not save the new question in the database' do
-          expect { post :create, params: { question_id: question, answer: attributes_for(:invalid_answer) } }.to_not change(Answer, :count)
+          expect { post :create, params: { question_id: question, answer: attributes_for(:invalid_answer), format: :js } }.to_not change(Answer, :count)
         end
 
-        it 're-renders new view' do
-          post :create, params: { question_id: question, answer: attributes_for(:invalid_answer) }
-          expect(response).to render_template 'questions/show'
+        it 'render create template' do
+          post :create, params: { question_id: question, answer: attributes_for(:invalid_answer), format: :js }
+          expect(response).to render_template :create
         end
       end
     end
 
     context 'user is not signed in' do
       it 'does not save the new answer in the database' do
-        expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to_not change(question.answers, :count)
+        expect { post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js } }.to_not change(question.answers, :count)
       end
 
       it 'redirect to sign in page' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer) }
-        expect(response).to redirect_to new_user_session_path
+        post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
+        expect(response).to have_http_status(401)
       end
     end
   end

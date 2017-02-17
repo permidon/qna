@@ -7,38 +7,33 @@ feature 'Create answer', %q{
 } do
 
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
-  given(:answer) { create(:answer) }
+  given!(:question) { create(:question) }
+  given!(:answer) { create(:answer) }
 
-  scenario 'Authenticated user creates an answer with valid attributes' do
+  scenario 'Authenticated user creates an answer with valid attributes', js: true do
     sign_in(user)
 
     visit question_path(question)
-    fill_in 'Answer', with: answer.body
-    click_on 'Create'
 
-    expect(page).to have_content 'The answer has been successfully created.'
+    fill_in 'Your Answer', with: answer.body
+    click_on 'Post Your Answer'
+
     expect(current_path).to eq question_path(question)
-    expect(page).to have_content answer.body
+    within '.answers' do
+      expect(page).to have_content answer.body
+    end
   end
 
-  scenario 'Authenticated user creates an answer with invalid attributes' do
+  scenario 'Authenticated user creates an answer with invalid attributes', js: true do
     sign_in(user)
 
     visit question_path(question)
-    fill_in 'Answer', with: nil
-    click_on 'Create'
+    fill_in 'Your Answer', with: nil
+    click_on 'Your Answer'
 
-    expect(page).to have_content 'Body can\'t be blank'
-    expect(page).to have_no_content answer.body
-  end
-
-  scenario 'Non-authenticated user creates an answer' do
-    visit question_path(question)
-    fill_in 'Answer', with: answer.body
-    click_on 'Create'
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
-    expect(current_path).to eq new_user_session_path
+    expect(current_path).to eq question_path(question)
+    within '.answers' do
+      expect(page).to have_no_content answer.body
+    end
   end
 end
