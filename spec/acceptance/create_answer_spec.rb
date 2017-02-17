@@ -29,9 +29,10 @@ feature 'Create answer', %q{
 
     visit question_path(question)
     fill_in 'Your Answer', with: nil
-    click_on 'Your Answer'
+    click_on 'Post Your Answer'
 
     expect(current_path).to eq question_path(question)
+    expect(page).to have_content 'Body can\'t be blank'
     within '.answers' do
       expect(page).to have_no_content answer.body
     end

@@ -1,5 +1,6 @@
 div= form_for [@question, @answer], remote: true do |f|
   = render 'common/errors', resource: @answer
   p= f.label :body, "Your Answer"
+  .errors
   p= f.text_area :body, cols: '80', rows: '10'
   = f.submit 'Post Your Answer', class: 'btn btn-info btn-sm'
