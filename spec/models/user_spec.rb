@@ -26,7 +26,7 @@ RSpec.describe User, type: :model do
       end
 
       it "compares user_id and answer_id" do
-        expect(user).to_not be_author_of(question)
+        expect(user).to_not be_author_of(answer)
       end
     end
   end
