@@ -56,11 +56,10 @@ RSpec.describe AnswersController, type: :controller do
     context 'user is signed in' do
       sign_in_user
       context 'user is the author of the answer' do
-        let(:answer) { create(:answer, question: question, user: @user) }
+        let!(:answer) { create(:answer, question: question, user: @user) }
 
         it 'deletes the answer' do
-          params = { id: answer }
-          expect { delete :destroy, params: params }.to change(question.answers, :count).by(-1)
+          expect { delete :destroy, params: { id: answer } }.to change(question.answers, :count).by(-1)
         end
 
         it 'redirects to index view' do
@@ -93,6 +92,97 @@ RSpec.describe AnswersController, type: :controller do
       it 'redirect to sign in page' do
         delete :destroy, params: { id: answer }
         expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    context 'user is signed in' do
+      sign_in_user
+      context 'user is the author of the answer' do
+        context 'with valid attributetes' do
+          let(:answer) { create(:answer, question: question, user: @user) }
+
+          it 'assigns the question to @question' do
+            patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+            expect(assigns(:question)).to eq question
+          end
+
+          it 'assings the requested answer to @answer' do
+            patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+            expect(assigns(:answer)).to eq answer
+          end
+
+          it 'changes answer attributes' do
+            patch :update, params: { id: answer, question_id: question, answer: { body: 'new body'}, format: :js }
+            answer.reload
+            expect(answer.body).to eq 'new body'
+          end
+
+          it 'render update template' do
+            patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+            expect(response).to render_template :update
+          end
+        end
+
+        context 'with invalid attributetes' do
+          let(:answer) { create(:answer, question: question, user: @user) }
+
+          it 'assigns the question to @question' do
+            patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+            expect(assigns(:question)).to eq question
+          end
+
+          it 'assings the requested answer to @answer' do
+            patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+            expect(assigns(:answer)).to eq answer
+          end
+
+          it 'changes answer attributes' do
+            patch :update, params: { id: answer, question_id: question, answer: { body: nil}, format: :js }
+            answer.reload
+            expect(answer.body).to_not eq nil
+          end
+
+          it 'render update template' do
+            patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+            expect(response).to render_template :update
+          end
+        end
+      end
+
+      context 'user is not the author of the answer' do
+        let(:user) { create(:user) }
+        let(:answer) { create(:answer, question: question, user: user) }
+
+        it 'assings the requested answer to @answer' do
+          patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+          expect(assigns(:answer)).to eq answer
+        end
+
+        it 'does not change answer attributes' do
+          patch :update, params: { id: answer, question_id: question, answer: { body: 'new body'}, format: :js }
+          answer.reload
+          expect(answer.body).to_not eq 'new body'
+        end
+
+        it 'render update template' do
+          patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+          expect(response).to render_template :update
+        end
+      end
+    end
+    
+    context 'user is a guest' do
+      it 'does not change answer attributes' do
+        patch :update, params: { id: answer, question_id: question, answer: { body: 'new body'}, format: :js }
+        answer.reload
+        expect(answer.body).to_not eq 'new body'
+      end
+
+      it 'edirect to sign in page' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+        expect(response).to have_http_status(401)
       end
     end
   end
