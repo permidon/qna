@@ -139,4 +139,72 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #update' do
+    context 'user is signed in' do
+      sign_in_user
+      context 'user is the author of the question' do
+        let!(:question) { create(:question, user: @user) }
+        context 'with valid attributes' do
+          it 'assigns the requested question to @question' do
+            patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+            expect(assigns(:question)).to eq question
+          end
+
+          it 'changes the question attributes' do
+            patch :update, params: { id: question, question: { title: 'new title', body: 'new body'}, format: :js }
+            question.reload
+            expect(question.title).to eq 'new title'
+            expect(question.body).to eq 'new body'
+          end
+
+          it 'renders update view' do
+            patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+            expect(response).to render_template :update
+          end
+        end
+
+        context 'with invalid attributes' do
+          before { patch :update, params: { id: question, question: { title: 'new title', body: nil}, format: :js } }
+          it 'does not change the question attributes' do
+            question.reload
+            expect(question.title).to eq question.title
+            expect(question.body).to eq question.body
+          end
+
+          it 're-renders update view' do
+            expect(response).to render_template :update
+          end
+        end
+      end
+
+      context 'user is not the author of the question' do
+        let!(:question) { create(:question) }
+
+        before { patch :update, params: { id: question, question: { title: 'new title', body: 'new body'}, format: :js } }
+        it 'does not change question attributes' do
+          question.reload
+          expect(question.title).to eq question.title
+          expect(question.body).to eq question.body
+        end
+
+        it 're-renders update view' do
+          expect(response).to render_template :update
+        end
+      end
+    end
+
+    context 'user is not signed in' do
+      before { patch :update, params: { id: question, question: { title: 'new title', body: 'new body'}, format: :js } }
+      it 'does not change answer attributes' do
+        question.reload
+        expect(question.title).to_not eq 'new title'
+        expect(question.body).to_not eq 'new body'
+      end
+
+      it 'redirect to sign in page' do
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
 end

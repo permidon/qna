@@ -1,9 +1,6 @@
 .container
-  div style="margin-left: auto; margin-right: auto"
-    h2.page-title style="text-align: center" = @question.title
-    h3= @question.body
-    - if user_signed_in? && current_user.author_of?(@question)
-      = link_to 'Delete question', @question, method: :delete
+  .question style="margin-left: auto; margin-right: auto"
+    =render @question
 br
 
 .answers

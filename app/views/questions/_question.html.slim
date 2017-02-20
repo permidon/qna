@@ -1,0 +1,13 @@
+h2.page-title style="text-align: center" = @question.title
+h3= @question.body
+- if user_signed_in? && current_user.author_of?(@question)
+  ul.list-unstyled
+    li= link_to 'Edit question','', class: 'edit-question-link', data: {question_id: @question.id}
+    li= link_to 'Delete question', @question, method: :delete
+    li= form_for @question, remote: true, html: { id: "edit-question-#{@question.id}"} do |f|
+      p= f.label :title, "Title"
+      p= f.text_field :title, size: '80'
+      p= f.label :body, "Question"
+      .edit-question-errors-form
+      p= f.text_area :body, cols: '80', rows: '10'
+      p= f.submit 'Save Question'

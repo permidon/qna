@@ -24,7 +24,7 @@ feature 'Edit answer', %q{
         fill_in 'Answer', with: 'Test Message'
         click_on 'Save Answer'
 
-        # expect(page).to have_no_content answer.body
+        expect(page).to have_no_content answer.body
         expect(page).to have_content 'Test Message'
         expect(page).to have_no_selector 'textarea'
       end

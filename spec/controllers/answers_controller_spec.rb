@@ -172,7 +172,7 @@ RSpec.describe AnswersController, type: :controller do
         end
       end
     end
-    
+
     context 'user is a guest' do
       it 'does not change answer attributes' do
         patch :update, params: { id: answer, question_id: question, answer: { body: 'new body'}, format: :js }
@@ -180,7 +180,7 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to_not eq 'new body'
       end
 
-      it 'edirect to sign in page' do
+      it 'redirect to sign in page' do
         patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
         expect(response).to have_http_status(401)
       end
