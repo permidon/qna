@@ -40,7 +40,7 @@ feature 'Edit answer', %q{
     end
   end
 
-  scenario 'Non-authenticated user edits an answer', js: true do
+  scenario 'Non-authenticated user edits an answer' do
     visit question_path(question)
 
     within '.answers' do
@@ -48,7 +48,7 @@ feature 'Edit answer', %q{
     end
   end
 
-  scenario 'Non-author edits an answer', js: true do
+  scenario 'Non-author edits an answer' do
     sign_in(user)
 
     visit question_path(question)

@@ -44,7 +44,7 @@ feature 'Edit question', %q{
     end
   end
 
-  scenario 'Non-authenticated user edits a question', js: true do
+  scenario 'Non-authenticated user edits a question' do
     visit question_path(question)
 
     within '.question' do
@@ -52,7 +52,7 @@ feature 'Edit question', %q{
     end
   end
 
-  scenario 'Non-author edits a question', js: true do
+  scenario 'Non-author edits a question' do
     sign_in(user)
 
     visit question_path(question)

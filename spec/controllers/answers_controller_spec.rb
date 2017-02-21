@@ -208,7 +208,7 @@ RSpec.describe AnswersController, type: :controller do
         it 'changes answer attributes' do
           patch :mark_best, params: { id: answer, question_id: question, answer: { best: true }, format: :js }
           answer.reload
-          expect(answer.best).to eq true
+          expect(answer).to be_best
         end
 
         it 'render best template' do
@@ -235,7 +235,7 @@ RSpec.describe AnswersController, type: :controller do
         it 'does not change answer attributes' do
           patch :mark_best, params: { id: answer, question_id: question, answer: { best: true }, format: :js }
           answer.reload
-          expect(answer.best).to eq false
+          expect(answer).to_not be_best
         end
 
         it 'render best template' do
@@ -252,7 +252,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not change answer attributes' do
         patch :mark_best, params: { id: answer, question_id: question, answer: { best: true }, format: :js }
         answer.reload
-        expect(answer.best).to eq false
+        expect(answer).to_not be_best
       end
 
       it 'render best template' do

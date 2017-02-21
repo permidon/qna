@@ -16,19 +16,19 @@ feature 'Delete answer', %q{
 
     visit question_path(question)
     click_on 'Delete answer'
-    
+
     expect(current_path).to eq question_path(question)
     expect(page).to have_no_content answer.body
   end
 
-  scenario 'Authenticated user deletes other answer', js: true do
+  scenario 'Authenticated user deletes other answer' do
     sign_in(bad_user)
 
     visit question_path(question)
     expect(page).to have_no_link 'Delete answer'
   end
 
-  scenario 'Non-authenticated user deletes a answer', js: true do
+  scenario 'Non-authenticated user deletes a answer' do
     visit question_path(question)
     expect(page).to have_no_link 'Delete answer'
   end

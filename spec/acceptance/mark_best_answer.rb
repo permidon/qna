@@ -29,14 +29,14 @@ feature 'Mark the best answer', %q{
     expect(page).to have_no_content 'Best Answer'
   end
 
-  scenario 'Non-author marks the answers as the best', js: true do
+  scenario 'Non-author marks the answers as the best' do
     sign_in(user)
     visit question_path(question)
 
     expect(page).to have_no_link 'Mark answer as the best'
   end
 
-  scenario 'Guest marks the answers as the best', js: true do
+  scenario 'Guest marks the answers as the best' do
     visit question_path(question)
 
     expect(page).to have_no_link 'Mark answer as the best'
