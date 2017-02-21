@@ -4,7 +4,7 @@
     $('.edit-answer-errors-form').html('<%= j message %>');
   <% end %>
 <% else %>
-  $('.answers').html('<%= j render @question.answers.helpful %>');
+  $("#unit-answer-<%= @answer.id %>").html('<%= j render @answer %>');
   $('.edit-answer-errors-form').html('');
   $('.edit-answer-link').click(function(e) {
     e.preventDefault();
