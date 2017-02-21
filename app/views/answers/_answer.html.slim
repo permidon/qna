@@ -1,5 +1,7 @@
 ul.list-unstyled
   - if answer.persisted?
+    - if answer.best == true
+      li= 'Best Answer'
     li= answer.body
     - if user_signed_in? && current_user.author_of?(answer)
       li= link_to 'Edit answer', '', class: 'edit-answer-link', data: {answer_id: answer.id}
@@ -9,3 +11,8 @@ ul.list-unstyled
         .edit-answer-errors-form
         = f.text_area :body
         p= f.submit 'Save Answer'
+    - if user_signed_in? && current_user.author_of?(answer.question)
+      - if answer.best
+        li= link_to 'Remove the mark of best answer', mark_best_answer_path(answer), method: :patch, remote: true
+      - else
+        li= link_to 'Mark answer as the best', mark_best_answer_path(answer), method: :patch, remote: true

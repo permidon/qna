@@ -186,4 +186,79 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #mark_best' do
+    context 'user is signed in' do
+      sign_in_user
+      context 'user is the author of the question' do
+        let(:user) { create(:user) }
+        let(:question) { create(:question, user: @user) }
+        let(:answer) { create(:answer, question: question, user: user) }
+
+        it 'assigns the question to @question' do
+          patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'assings the answer to @answer' do
+          patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+          expect(assigns(:answer)).to eq answer
+        end
+
+        it 'changes answer attributes' do
+          patch :mark_best, params: { id: answer, question_id: question, answer: { best: true }, format: :js }
+          answer.reload
+          expect(answer.best).to eq true
+        end
+
+        it 'render best template' do
+          patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+          expect(response).to render_template :mark_best
+        end
+      end
+
+      context 'user is not the author of the question' do
+        let(:user) { create(:user) }
+        let(:question) { create(:question, user: user) }
+        let(:answer) { create(:answer, question: question, user: user) }
+
+        it 'assigns the question to @question' do
+          patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'assings the answer to @answer' do
+          patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+          expect(assigns(:answer)).to eq answer
+        end
+
+        it 'does not change answer attributes' do
+          patch :mark_best, params: { id: answer, question_id: question, answer: { best: true }, format: :js }
+          answer.reload
+          expect(answer.best).to eq false
+        end
+
+        it 'render best template' do
+          patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+          expect(response).to render_template :mark_best
+        end
+      end
+    end
+
+    context 'user is not signed in' do
+      before {question}
+      before {answer}
+
+      it 'does not change answer attributes' do
+        patch :mark_best, params: { id: answer, question_id: question, answer: { best: true }, format: :js }
+        answer.reload
+        expect(answer.best).to eq false
+      end
+
+      it 'render best template' do
+        patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
 end

@@ -4,5 +4,5 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
-  scope :created, -> { order(created_at: :asc) }
+  scope :helpful, -> { order(best: :desc).order(created_at: :asc) }
 end
