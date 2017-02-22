@@ -6,7 +6,7 @@ RSpec.describe Answer, type: :model do
 
   it { should validate_presence_of :body }
 
-  context "set best_status" do
+  describe "set best_status" do
     let!(:question) { create(:question) }
     let!(:answer1) { create(:answer, question: question, best: true)}
     let!(:answer2) { create(:answer, question: question)}

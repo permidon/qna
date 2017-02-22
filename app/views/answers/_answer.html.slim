@@ -1,4 +1,4 @@
-ul.list-unstyled id="unit-answer-#{answer.id}"
+ul.list-unstyled id="answer-#{answer.id}"
   - if answer.persisted?
     - if answer.best?
       li= 'Best Answer'
@@ -12,7 +12,4 @@ ul.list-unstyled id="unit-answer-#{answer.id}"
         = f.text_area :body
         p= f.submit 'Save Answer'
     - if user_signed_in? && current_user.author_of?(answer.question)
-      - if answer.best?
-        li= link_to 'Remove the mark of best answer', mark_best_answer_path(answer), method: :patch, remote: true
-      - else
-        li= link_to 'Mark answer as the best', mark_best_answer_path(answer), method: :patch, remote: true
+      li= link_to answer.best? ? 'Remove the mark of best answer' : 'Mark answer as the best', mark_best_answer_path(answer), method: :patch, remote: true

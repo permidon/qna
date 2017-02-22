@@ -6,6 +6,5 @@ Rails.application.routes.draw do
     end
   end
 
-
   root 'questions#index'
 end
