@@ -5,9 +5,5 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
-  # def reset_best_status
-  #   self.answers.each do |answer|
-  #     answer.update(best: false)
-  #   end
-  # end
+  accepts_nested_attributes_for :attachments
 end
