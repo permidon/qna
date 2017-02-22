@@ -1,5 +1,9 @@
 h2.page-title style="text-align: center" = @question.title
 h3= @question.body
+p Attachments:
+ul
+  - @question.attachments.each do |att|
+    li= att.file.file.filename
 - if user_signed_in? && current_user.author_of?(@question)
   ul.list-unstyled
     li= link_to 'Edit question','', class: 'edit-question-link', data: {question_id: @question.id}

@@ -8,4 +8,10 @@
         p= f.text_field :title, size: '80'
         p= f.label :body
         p= f.text_area :body, cols: '80', rows: '10'
+        p Attachments:
+        p
+          = f.fields_for :attachments do |a|
+            = a.label :file
+            = a.file_field :file
+
         = f.submit 'Create', class: 'btn btn-default'
