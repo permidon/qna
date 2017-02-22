@@ -1,5 +1,15 @@
-ul.list-unstyled
+ul.list-unstyled id="answer-#{answer.id}"
   - if answer.persisted?
+    - if answer.best?
+      li= 'Best Answer'
     li= answer.body
     - if user_signed_in? && current_user.author_of?(answer)
-      li= link_to 'Delete answer', answer_path(answer), method: :delete
+      li= link_to 'Edit answer', '', class: 'edit-answer-link', data: {answer_id: answer.id}
+      li= link_to 'Delete answer', answer_path(answer), method: :delete, class: 'delete-answer-link', remote: true
+      li= form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}"} do |f|
+        = f.label :body, "Answer"
+        .edit-answer-errors-form
+        = f.text_area :body
+        p= f.submit 'Save Answer'
+    - if user_signed_in? && current_user.author_of?(answer.question)
+      li= link_to answer.best? ? 'Remove the mark of best answer' : 'Mark answer as the best', mark_best_answer_path(answer), method: :patch, remote: true
