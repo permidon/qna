@@ -20,6 +20,7 @@ gem 'devise'
 gem 'twitter-bootstrap-rails'
 gem 'therubyracer'
 gem 'carrierwave'
+gem 'remotipart'
 
 
 group :development, :test do
