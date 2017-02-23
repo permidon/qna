@@ -21,6 +21,7 @@ gem 'twitter-bootstrap-rails'
 gem 'therubyracer'
 gem 'carrierwave'
 gem 'remotipart'
+gem 'cocoon'
 
 
 group :development, :test do
