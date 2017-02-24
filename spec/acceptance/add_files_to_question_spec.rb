@@ -12,11 +12,11 @@ feature 'Add files to question', %q{
   background do
     sign_in(user)
     visit new_question_path
+    fill_in 'Title', with: question.title
+    fill_in 'Body', with: question.body
   end
 
   scenario 'Author adds a file when he asks a question', js: true do
-    fill_in 'Title', with: question.title
-    fill_in 'Body', with: question.body
     attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
     click_on 'Create'
 
@@ -24,9 +24,6 @@ feature 'Add files to question', %q{
   end
 
   scenario 'Author adds files when he asks a question', js: true do
-    fill_in 'Title', with: question.title
-    fill_in 'Body', with: question.body
-
     click_on 'add another file'
 
     inputs = all('input[type="file"]')

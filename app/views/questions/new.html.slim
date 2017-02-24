@@ -12,6 +12,6 @@
         .question-attachments
           p
             = f.fields_for :attachments do |file|
-              = render 'attachment_fields', f: file
-            p = link_to_add_association 'add another file', f, :attachments
-          = f.submit 'Create', class: 'btn btn-default'
+              = render 'common/attachment_fields', f: file
+            p = link_to_add_association 'add another file', f, :attachments, partial: 'common/attachment_fields'
+        = f.submit 'Create', class: 'btn btn-default'

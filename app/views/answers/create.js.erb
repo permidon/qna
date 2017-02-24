@@ -5,6 +5,6 @@
   <% end %>
 <% else %>
   $('.new-answer-form').val('');
-  $('.answers').append('<%= j render @answer %>');
   $('.answer-errors').html('');
+  $('.answers').append('<%= j render @answer %>');
 <% end %>
