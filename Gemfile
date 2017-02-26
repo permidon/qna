@@ -19,6 +19,10 @@ gem 'rails-controller-testing'
 gem 'devise'
 gem 'twitter-bootstrap-rails'
 gem 'therubyracer'
+gem 'carrierwave'
+gem 'remotipart'
+gem 'cocoon'
+
 
 group :development, :test do
   gem 'byebug', platform: :mri
