@@ -1,5 +1,6 @@
 class Answer < ApplicationRecord
   has_many :attachments, as: :attachable, dependent: :destroy
+  has_many :votes, as: :votable, dependent: :destroy
   belongs_to :question
   belongs_to :user
 
