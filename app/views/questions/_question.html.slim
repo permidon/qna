@@ -1,16 +1,16 @@
 h2.page-title style="text-align: center" = @question.title
-h3= @question.body
-p Attachments:
-ul.list-unstyled
+h3.lead= @question.body
+p.small Attachments:
+div
   - @question.attachments.each do |a|
     .attachment id="attachment-#{a.id}"
-      li= link_to a.file.identifier, a.file.url
-      li= link_to 'Delete file', a, method: :delete, remote: true if user_signed_in? && current_user.author_of?(@question)
-      br
+      ul.list-unstyled.list-inline
+        li= link_to a.file.identifier, a.file.url
+        li= link_to 'Delete file', a, method: :delete, remote: true, class: 'text-warning' if user_signed_in? && current_user.author_of?(@question)
+        br
 - if user_signed_in? && current_user.author_of?(@question)
-  ul.list-unstyled
+  ul.list-unstyled.list-inline
     li= link_to 'Edit question','', class: 'edit-question-link', data: {question_id: @question.id}
-    li= link_to 'Delete question', @question, method: :delete
     li= form_for @question, remote: true, html: { id: "edit-question-#{@question.id}"} do |f|
       p= f.label :title, "Title"
       p= f.text_field :title, size: '80'
@@ -18,3 +18,4 @@ ul.list-unstyled
       .edit-question-errors-form
       p= f.text_area :body, cols: '80', rows: '10'
       p= f.submit 'Save Question'
+    li= link_to 'Delete question', @question, method: :delete, class: 'text-warning'
