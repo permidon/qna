@@ -10,7 +10,7 @@ RSpec.describe Vote do
   it { should validate_presence_of :votable_type }
 
   # it { should validate_uniqueness_of(:user_id).scoped_to(:votable_id, :votable_type)}
-  # Не проходит при наличии в модели after_create и after_destroy
+  # Не проходит если в модели выполнять rating_increment после after_create
 
   it { should validate_inclusion_of(:value).in_array([-1, 1]) }
 end

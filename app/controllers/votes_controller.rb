@@ -18,11 +18,10 @@ class VotesController < ApplicationController
   def destroy
     @vote = Vote.find(params[:id])
     votable = @vote.votable
-    votable_type = @vote.votable_type
 
     if !current_user.author_of?(votable) && votable.votes.find_by(user_id: current_user.id)
       if @vote.destroy
-        render json: { votable_id: votable.id, votable_type: votable_type, rating: votable.rating }
+        render json: { vote: @vote, rating: votable.rating }
       else
         render json: @vote.errors.full_messages, status: :unprocessable_entity
       end
