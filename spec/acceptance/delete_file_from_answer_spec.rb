@@ -1,6 +1,6 @@
 require_relative 'acceptance_helper'
 
-feature 'Delete answer', %q{
+feature 'Delete answer\'s files', %q{
   In order to remove not relevant file
   As an author of the question
   I want to be able to delete the file
