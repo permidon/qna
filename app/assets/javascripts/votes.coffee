@@ -7,7 +7,7 @@ ready = ->
     vote = xhr.responseJSON.vote
     rating = xhr.responseJSON.rating
     vote_div = '.' + 'vote-' + vote.votable_type.toLowerCase() + '-' + vote.votable_id
-    $(vote_div + " div.rating" + " p").html("<p> Rating: " + rating + "</p>")
+    $(vote_div + " .rating" + " .rating-value").html("<p> Rating: " + rating + "</p>")
     $(vote_div + " .vote-reset-link").attr("href", "/votes/" + vote.id).show()
     $(vote_div + " .vote-up-link").hide()
     $(vote_div + " .vote-down-link").hide()
@@ -21,7 +21,7 @@ ready = ->
     vote = xhr.responseJSON.vote
     rating = xhr.responseJSON.rating
     vote_div = '.' + 'vote-' + vote.votable_type.toLowerCase() + '-' + vote.votable_id
-    $(vote_div + " div.rating" + " p").html("<p> Rating: " + rating + "</p>")
+    $(vote_div + " .rating" + " .rating-value").html("<p> Rating: " + rating + "</p>")
     $(vote_div + " .vote-reset-link").hide()
     $(vote_div + " .vote-up-link").show()
     $(vote_div + " .vote-down-link").show()

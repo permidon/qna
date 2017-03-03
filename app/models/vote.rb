@@ -5,6 +5,7 @@ class Vote < ApplicationRecord
   validates :user_id, :votable_id, :votable_type, :value, presence: true
   validates :user_id, uniqueness: { scope: [:votable_id, :votable_type] }
   validates :value, inclusion: { in: [-1, 1] }
+  validates :votable_type, inclusion: { in: ['Question', 'Answer']  }
 
   after_create :rating_increment
   after_destroy :rating_decrement
