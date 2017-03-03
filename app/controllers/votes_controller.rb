@@ -18,8 +18,8 @@ class VotesController < ApplicationController
   def destroy
     @vote = Vote.find(params[:id])
     votable = @vote.votable
-
-    if !current_user.author_of?(votable) && votable.votes.find_by(user_id: current_user.id)
+    
+    if current_user.author_of?(@vote)
       if @vote.destroy
         render json: { vote: @vote, rating: votable.rating }
       else
