@@ -1,0 +1,15 @@
+div [class="vote-#{votable.class.to_s.downcase}-#{votable.id}"]
+  .rating
+    .rating-value
+      p= "Rating: #{votable.rating}"
+  - if user_signed_in? && !current_user.author_of?(votable)
+    - if votable.votes.find_by(user_id: current_user.id)
+      = link_to 'Reset Vote', vote_path(current_user.votes.find_by(votable_id: votable.id), value: 1), method: :delete, remote: true, data: {type: :json}, class: "vote-reset-link"
+      = link_to 'Thumbs Up', polymorphic_path([votable, :votes], value: 1), method: :post, remote: true, data: {type: :json}, class: "vote-up-link", style: "display: none"
+      | &nbsp;
+      = link_to 'Thumbs Down', polymorphic_path([votable, :votes], value: -1), method: :post, remote: true, data: {type: :json}, class: "vote-down-link", style: "display: none"
+    - else
+      = link_to 'Reset Vote', '#', method: :delete, remote: true, data: {type: :json}, class: "vote-reset-link", style: "display: none"
+      = link_to 'Thumbs Up', polymorphic_path([votable, :votes], value: 1), method: :post, remote: true, data: {type: :json}, class: "vote-up-link"
+      | &nbsp;
+      = link_to 'Thumbs Down', polymorphic_path([votable, :votes], value: -1), method: :post, remote: true, data: {type: :json}, class: "vote-down-link"

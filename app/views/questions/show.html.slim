@@ -1,10 +1,9 @@
 .container
+  .vote-alert
   .question style="margin-left: auto; margin-right: auto"
     =render @question
-br
-
-.answers
-  = render @question.answers.helpful
-
-.answer-form
-  = render 'answers/form'
+  br
+  .answers
+    = render @question.answers.helpful
+  .answer-form
+    = render 'answers/form'

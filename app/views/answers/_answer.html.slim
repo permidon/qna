@@ -1,22 +1,24 @@
-ul.list-unstyled id="answer-#{answer.id}"
-  - if answer.persisted?
-    - if answer.best?
-      li= 'Best Answer'
-    li= answer.body
-    li Attachments:
-    ul.list-unstyled
-      - answer.attachments.each do |a|
-        .attachment id="attachment-#{a.id}"
-          li= link_to a.file.identifier, a.file.url
-          li= link_to 'Delete file', a, method: :delete, remote: true if user_signed_in? && current_user.author_of?(answer)
-          br
-    - if user_signed_in? && current_user.author_of?(answer)
+div id="answer-#{answer.id}"
+  ul.list-unstyled
+    - if answer.persisted?
+      - if answer.best?
+        li= 'Best Answer'
+      li.lead= answer.body
+  p.small Attachments:
+  div
+    - answer.attachments.each do |a|
+      .attachment id="attachment-#{a.id}"
+        = render 'attachments/attachment', a: a, attachable: answer
+  .answer-rating
+    = render 'votes/vote', votable: answer
+  - if user_signed_in? && current_user.author_of?(answer)
+    ul.list-unstyled.list-inline
       li= link_to 'Edit answer', '', class: 'edit-answer-link', data: {answer_id: answer.id}
-      li= link_to 'Delete answer', answer_path(answer), method: :delete, class: 'delete-answer-link', remote: true
-      li= form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}"} do |f|
-        = f.label :body, "Answer"
+      li= form_for answer, remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|
+        p= f.label :body, "Answer"
         .edit-answer-errors-form
-        = f.text_area :body
+        p= f.text_area :body
         p= f.submit 'Save Answer'
-    - if user_signed_in? && current_user.author_of?(answer.question)
-      li= link_to answer.best? ? 'Remove the mark of best answer' : 'Mark answer as the best', mark_best_answer_path(answer), method: :patch, remote: true
+      li= link_to 'Delete answer', answer_path(answer), method: :delete, class: 'delete-answer-link text-warning', remote: true
+  - if user_signed_in? && current_user.author_of?(answer.question)
+    p= link_to answer.best? ? 'Remove the mark of best answer' : 'Mark answer as the best', mark_best_answer_path(answer), method: :patch, remote: true

@@ -6,10 +6,4 @@
 <% else %>
   $('.question').html('<%= j render @question %>');
   $('.edit-question-errors-form').html('');
-  $('.edit-question-link').click(function(e) {
-    e.preventDefault();
-    $(this).hide();
-    question_id = $(this).data('questionId');
-    $('form#edit-question-' + question_id).show();
-  });
 <% end %>

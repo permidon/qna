@@ -4,12 +4,14 @@ h3 All questions
   table.table.table-condensed
     thead
       tr
-        td Answers
-        td Questions
+        td.text-center style="width:75px" Rating
+        td.text-center style="width:75px" Answers
+        td.text-center Questions
     tbody
       - @questions.each do |question|
         tr
-          td.answers= question.answers.count
+          td.rating.text-center= question.rating
+          td.answers.text-center= question.answers.count
           td.title= link_to "#{question.title}", question_path(question)
 
 .col-lg-3
