@@ -8,7 +8,7 @@ feature 'Add files to answer', %q{
 
   given(:user) { create(:user) }
   given!(:question) { create(:question) }
-  given!(:answer) { create(:answer, question: question) }
+  given(:answer) { create(:answer, question: question) }
 
   background do
     sign_in(user)
@@ -25,17 +25,19 @@ feature 'Add files to answer', %q{
     end
   end
 
-  scenario 'Author adds files when he asks a question', js: true do
-    click_on 'add another file'
+  scenario 'Author adds files when he answers', js: true do
+    within '.new_answer' do
+      click_on 'add another file'
 
-    inputs = all('input[type="file"]')
+      inputs = all('input[type="file"]')
 
-    inputs[0].set("#{Rails.root}/spec/rails_helper.rb")
-    inputs[1].set("#{Rails.root}/spec/spec_helper.rb")
+      inputs[0].set("#{Rails.root}/spec/rails_helper.rb")
+      inputs[1].set("#{Rails.root}/spec/spec_helper.rb")
 
-    click_on 'Post Your Answer'
+      click_on 'Post Your Answer'
+    end
 
-    expect(page).to have_link 'rails_helper.rb', href: '/uploads/attachment/file/1/rails_helper.rb'
-    expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/2/spec_helper.rb'
+      expect(page).to have_link 'rails_helper.rb', href: '/uploads/attachment/file/1/rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/2/spec_helper.rb'
   end
 end

@@ -1,21 +1,28 @@
 div id="question-#{question.id}"
-  h2.page-title style="text-align: center" = @question.title
-  h3.lead= @question.body
+  h2.page-title style="text-align: center" = question.title
+  h3.lead= question.body
   p.small Attachments:
   div
-    - @question.attachments.each do |a|
+    - question.attachments.each do |a|
       .attachment id="attachment-#{a.id}"
-        = render 'attachments/attachment', a: a, attachable: @question
+        = render 'attachments/attachment', a: a, attachable: question
   .question-rating
-    = render 'votes/vote', votable: @question
-  - if user_signed_in? && current_user.author_of?(@question)
+    = render 'votes/vote', votable: question
+  - if user_signed_in? && current_user.author_of?(question)
     ul.list-unstyled.list-inline
-      li= link_to 'Edit question','', class: 'edit-question-link', data: {question_id: @question.id}
-      li= form_for @question, remote: true, html: { id: "edit-question-#{@question.id}"} do |f|
+      li= link_to 'Edit question','', class: 'edit-question-link', data: {question_id: question.id}
+      li= form_for question, remote: true, html: { id: "edit-question-#{question.id}"} do |f|
         p= f.label :title, "Title"
         p= f.text_field :title, size: '80'
         p= f.label :body, "Question"
         .edit-question-errors-form
         p= f.text_area :body, cols: '80', rows: '10'
         p= f.submit 'Save Question'
-      li= link_to 'Delete question', @question, method: :delete, class: 'text-warning'
+      li= link_to 'Delete question', question, method: :delete, class: 'text-warning'
+  .comments
+    p.small Comments:
+    div class="comments-question-#{question.id}"
+      = render question.comments
+  .new-comment
+    - if user_signed_in?
+      = render 'comments/form', commentable: question
