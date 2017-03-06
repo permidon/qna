@@ -1,0 +1,4 @@
+tr
+  td.rating.text-center= question.rating
+  td.answers.text-center= question.answers.count
+  td.title= link_to "#{question.title}", question_path(question)

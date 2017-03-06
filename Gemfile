@@ -22,7 +22,8 @@ gem 'therubyracer'
 gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
-
+gem 'skim'
+gem 'gon'
 
 group :development, :test do
   gem 'byebug', platform: :mri
