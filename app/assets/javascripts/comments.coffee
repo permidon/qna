@@ -34,6 +34,7 @@ ready = ->
       comment_parent = '.' + 'comments-' + data.commentable_type.toLowerCase() + '-' + data.commentable_id
       comment = "<p class='small'>" + data.body + "</p>"
       $(comment_parent).append(comment)
+      $(document).ready(ready)
   })
 
 $(document).on('turbolinks:load', ready)

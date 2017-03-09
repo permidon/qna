@@ -15,6 +15,7 @@ ready = ->
     ,
     received: (data) ->
       $('.question-list').append data
+      $(document).ready(ready)
   })
 
 $(document).on('turbolinks:load', ready)

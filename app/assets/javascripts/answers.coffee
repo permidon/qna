@@ -21,6 +21,7 @@ ready = ->
         attachments: data.attachments,
         question: data.question
       )
+      $(document).ready(ready)
   })
 
 $(document).on('turbolinks:load', ready)
