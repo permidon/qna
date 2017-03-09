@@ -8,7 +8,7 @@ end
 gem 'rails', '~> 5.0.1'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '>= 5.0.6'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'jquery-rails'
@@ -22,8 +22,9 @@ gem 'therubyracer'
 gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
-gem 'skim'
 gem 'gon'
+gem 'skim'
+gem 'sprockets', '3.6.3'
 
 group :development, :test do
   gem 'byebug', platform: :mri

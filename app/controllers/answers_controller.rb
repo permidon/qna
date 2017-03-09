@@ -2,6 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_answer, only: [:destroy, :update, :mark_best]
   before_action :set_question, only: [:destroy, :update, :mark_best]
+  after_action :publish_answer, only: [:create]
 
   def create
     @question = Question.find(params[:question_id])
@@ -54,5 +55,25 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, attachments_attributes: [:file, :id, :_destroy])
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+
+    attachments = []
+    @answer.attachments.each do |a|
+      attachment = {}
+      attachment[:id] = a.id
+      attachment[:file_url] = a.file.url
+      attachment[:file_name] = a.file.identifier
+      attachments << attachment
+    end
+
+    ActionCable.server.broadcast(
+        "answers-question-#{@question.id}",
+        answer: @answer,
+        attachments: attachments,
+        question: @question
+    )
   end
 end

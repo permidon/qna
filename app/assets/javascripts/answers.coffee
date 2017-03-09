@@ -9,4 +9,18 @@ ready = ->
     answer_id = $(@).data('answerId')
     $('form#edit-answer-' + answer_id).show()
 
+  App.cable.subscriptions.create('AnswersChannel', {
+    connected: ->
+      question_id = $(".full-question").attr('id')
+      @perform 'follow', question_id: question_id
+    ,
+    received: (data) ->
+      return if gon.user_id is data.answer.user_id
+      $('.answers').append JST['templates/answer'](
+        answer: data.answer,
+        attachments: data.attachments,
+        question: data.question
+      )
+  })
+
 $(document).on('turbolinks:load', ready)
