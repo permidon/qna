@@ -3,12 +3,12 @@ div id="answer-#{@answer.id}"
       li.lead= @answer.body
   p.small Attachments:
   div
-    - if @attachments.length > 0
+    - unless @attachments.empty?
       - for a in @attachments
         .attachment id="attachment-#{a.id}"
           ul.list-unstyled.list-inline
             li
-              a href="#{a.file_url}" = a.file_name
+              a href="#{a.url}" = "#{a.name}"
             br
   .answer-rating
     div class="vote-answer-#{@answer.id}"

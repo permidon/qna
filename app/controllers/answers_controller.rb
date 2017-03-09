@@ -60,12 +60,14 @@ class AnswersController < ApplicationController
   def publish_answer
     return if @answer.errors.any?
 
+    # Если передать только @answer, то в jst не могу получить имена файлов, хотя URLы доступны
+
     attachments = []
     @answer.attachments.each do |a|
       attachment = {}
       attachment[:id] = a.id
-      attachment[:file_url] = a.file.url
-      attachment[:file_name] = a.file.identifier
+      attachment[:url] = a.file.url
+      attachment[:name] = a.file.identifier
       attachments << attachment
     end
 
