@@ -13,7 +13,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.remotipart
-//= require twitter/bootstrap
 //= require turbolinks
 //= require cocoon
+//= require twitter/bootstrap
+//= require action_cable
+//= require skim
 //= require_tree .
+
+var App = App || {};
+App.cable = ActionCable.createConsumer();

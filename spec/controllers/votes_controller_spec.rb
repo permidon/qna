@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe VotesController, type: :controller do
   let(:author) { create(:user) }
-  let(:user)  { create(:user) }
+  let(:user) { create(:user) }
   let!(:question) { create(:question, user: author) }
-  let!(:answer)   { create(:answer, question: question, user: author)}
+  let!(:answer) { create(:answer, question: question, user: author)}
 
   describe "POST #create" do
     context "user votes" do
-      before { sign_in user}
+      before { sign_in(user) }
 
       context "for a question with valid value" do
         it "changes Votes value" do
@@ -26,8 +26,8 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { answer_id: answer.id, value: 1, format: :json } }.to change(answer.votes, :count).by(1)
         end
 
-        it "send 422 status" do
-          post :create, params: { question_id: question.id, value: 1, format: :json }
+        it "send OK status" do
+          post :create, params: { answer_id: answer.id, value: 1, format: :json }
           expect(response).to have_http_status(200)
         end
       end
@@ -48,8 +48,8 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { answer_id: answer.id, value: 2, format: :json } }.to_not change(Vote, :count)
         end
 
-        it "send OK status" do
-          post :create, params: { question_id: question.id, value: 2, format: :json }
+        it "send 422 status" do
+          post :create, params: { answer_id: answer.id, value: 2, format: :json }
           expect(response).to have_http_status(422)
         end
       end
@@ -73,7 +73,7 @@ RSpec.describe VotesController, type: :controller do
         end
 
         it "send 401 status" do
-          post :create, params: { question_id: question.id, value: 1, format: :json }
+          post :create, params: { answer_id: answer.id, value: 1, format: :json }
           expect(response).to have_http_status(401)
         end
       end
@@ -99,7 +99,7 @@ RSpec.describe VotesController, type: :controller do
         end
 
         it "send 403 status" do
-          post :create, params: { question_id: question.id, value: 1, format: :json }
+          post :create, params: { answer_id: answer.id, value: 1, format: :json }
           expect(response).to have_http_status(403)
         end
       end

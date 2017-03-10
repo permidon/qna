@@ -1,0 +1,42 @@
+div id="answer-#{@answer.id}"
+  ul.list-unstyled
+      li.lead= @answer.body
+  p.small Attachments:
+  div
+    - unless @attachments.empty?
+      - for a in @attachments
+        .attachment id="attachment-#{a.id}"
+          ul.list-unstyled.list-inline
+            li
+              a href="#{a.url}" = "#{a.name}"
+            br
+  .answer-rating
+    div class="vote-answer-#{@answer.id}"
+      .rating
+        .rating-value
+          p= "Rating: #{@answer.rating}"
+      - if gon.user_id && gon.user_id != @answer.user_id
+        a data-type="json" class="vote-reset-link" style="display: none" data-remote="true" rel="nofollow" data-method="delete" href="#" = 'Reset Vote'
+        a data-type="json" class="vote-up-link" data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?value=1" = 'Thumbs Up'
+        '
+        a data-type="json" class="vote-down-link" data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?value=-1" = 'Thumbs Down'
+  - if @question.user_id == gon.user_id
+    p
+      a data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@answer.id}/mark_best" = 'Mark answer as the best'
+  .comments
+    p.small Comments:
+    div class="comments-answer-#{@answer.id}"
+    .new-comment
+      - if gon.user_id
+        ul.list-unstyled
+          li
+            a class='new-comment-link' data-commentable-id="#{@answer.id}" data-commentable-type='answer' href='' = 'Add Comment'
+          li
+            form id="new-answer-#{@answer.id}-comment" class="new_comment" action="/answers/#{@answer.id}/comments" accept-charset="UTF-8" data-remote="true" method="post"
+              input name="utf8" type="hidden" value="✓"
+              p
+                label for="comment_body" Your Comment
+              div class="comment-errors"
+              p
+                textarea class="new-comment-form" name="comment[body]" id="comment_body"
+              input type="submit" name="commit" value="Save Comment" data-disable-with="Save Comment" class="btn btn-info btn-sm"

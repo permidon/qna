@@ -59,4 +59,35 @@ feature 'Vote for an answer', %q{
       expect(page).to have_no_link 'Thumbs Down'
     end
   end
+
+  context "mulitple sessions", js: true do
+    scenario "answer's vote appears on another user's page" do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+
+        within '.answer-rating' do
+          expect(page).to have_content 'Rating: 0'
+        end
+      end
+
+      Capybara.using_session('user') do
+        within '.answer-rating' do
+          click_on 'Thumbs Up'
+          expect(page).to have_content 'Rating: 1'
+        end
+
+      end
+
+      Capybara.using_session('guest') do
+        within '.answer-rating' do
+          expect(page).to have_content 'Rating: 1'
+        end
+      end
+    end
+  end
 end

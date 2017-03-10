@@ -22,3 +22,10 @@ div id="answer-#{answer.id}"
       li= link_to 'Delete answer', answer_path(answer), method: :delete, class: 'delete-answer-link text-warning', remote: true
   - if user_signed_in? && current_user.author_of?(answer.question)
     p= link_to answer.best? ? 'Remove the mark of best answer' : 'Mark answer as the best', mark_best_answer_path(answer), method: :patch, remote: true
+  .comments
+    p.small Comments:
+    div class="comments-answer-#{answer.id}"
+      = render answer.comments
+    .new-comment
+      - if user_signed_in?
+        = render 'comments/form', commentable: answer

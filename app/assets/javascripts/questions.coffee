@@ -9,4 +9,13 @@ ready = ->
     question_id = $(@).data('questionId')
     $('form#edit-question-' + question_id).show()
 
+  App.cable.subscriptions.create('QuestionsChannel', {
+    connected: ->
+      @perform 'follow'
+    ,
+    received: (data) ->
+      $('.question-list').append data
+      $(document).ready(ready)
+  })
+
 $(document).on('turbolinks:load', ready)
