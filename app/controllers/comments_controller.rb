@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_commentable
 
-  after_action :publish_comment, only: [:create]
+  after_action :publish_comment
 
   def create
     @comment = current_user.comments.new(body: comment_params[:body], commentable: @commentable)
@@ -28,7 +28,7 @@ class CommentsController < ApplicationController
   def publish_comment
     return if @comment.errors.any?
     ActionCable.server.broadcast(
-        'comments', @comment
+      'comments', @comment
     )
   end
 end

@@ -17,10 +17,6 @@ ready = ->
     $(comment_form).hide()
     $(".comment-errors").html('')
 
-# Прорисовку коммента реализовал через ActionCable, очистку формы и стирание ошибок оставил тут,
-# т.к. если решать это через ActionCable, форма очистится и скроется и для другого пользователя,
-# который в данный момент комментирует этот же вопрос или ответ
-
   .bind 'ajax:error', (e, xhr, status, error) ->
     errors = xhr.responseJSON
     $.each errors, (index, value) ->
