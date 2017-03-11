@@ -44,8 +44,8 @@ class VotesController < ApplicationController
     return unless defined?(@vote)
     return if @vote.errors.any?
     ActionCable.server.broadcast(
-        'votes',
-        { vote: @vote, rating: @votable.rating }
+      'votes',
+      { vote: @vote, rating: @votable.rating }
     )
   end
 end

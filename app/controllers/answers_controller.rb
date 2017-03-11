@@ -1,49 +1,41 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_answer, only: [:destroy, :update, :mark_best]
-  before_action :set_question, only: [:destroy, :update, :mark_best]
-  after_action :publish_answer, only: [:create]
+  before_action :load_question, only: :create
+  before_action :set_answer, only: [:update, :destroy, :mark_best]
+  before_action :set_question, only: [:update, :destroy, :mark_best]
+  before_action :check_answer_owner, only: [:update, :destroy]
+  before_action :check_question_owner, only: :mark_best
+
+  after_action :publish_answer, only: :create
+
+  respond_to :js
 
   def create
-    @question = Question.find(params[:question_id])
-    @answer = @question.answers.build(answer_params)
-    @answer.user = current_user
-
-    if @answer.save
-      flash[:notice] = 'The answer has been successfully created.'
-    else
-      flash[:error] = 'The answer can not be created.'
-    end
+    respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
   end
 
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-      flash[:notice] ='The answer has been successfully deleted.'
-    else
-      flash[:alert] ='You can not delete this answer.'
-    end
+    respond_with(@answer.destroy)
   end
 
   def update
-    if current_user.author_of?(@answer)
-      @answer.update(answer_params)
-      flash[:notice] ='The answer has been successfully updated.'
-    else
-      flash[:alert] ='You can not update this answer.'
-    end
+    @answer.update(answer_params)
+    respond_with @answer
   end
 
   def mark_best
-    if current_user.author_of?(@question)
-      @answer.set_best_status
-      flash[:notice] ='The answer has been marked as the best.'
-    else
-      flash[:alert] ='You can not mark this answer.'
-    end
+    respond_with(@answer.set_best_status)
   end
 
   private
+
+  def answer_params
+    params.require(:answer).permit(:body, attachments_attributes: [:file, :id, :_destroy])
+  end
+
+  def load_question
+    @question = Question.find(params[:question_id])
+  end
 
   def set_answer
     @answer = Answer.find(params[:id])
@@ -53,14 +45,22 @@ class AnswersController < ApplicationController
     @question = @answer.question
   end
 
-  def answer_params
-    params.require(:answer).permit(:body, attachments_attributes: [:file, :id, :_destroy])
+  def check_question_owner
+    unless current_user.author_of?(@question)
+      flash[:error] = 'You have no permission to do this action'
+      redirect_to question_path
+    end
+  end
+
+  def check_answer_owner
+    unless current_user.author_of?(@answer)
+      flash[:error] = 'You have no permission to do this action'
+      redirect_to question_path
+    end
   end
 
   def publish_answer
     return if @answer.errors.any?
-
-    # Если передать только @answer, то в jst не могу получить имена файлов, хотя URLы доступны
 
     attachments = []
     @answer.attachments.each do |a|
@@ -72,10 +72,10 @@ class AnswersController < ApplicationController
     end
 
     ActionCable.server.broadcast(
-        "answers-question-#{@question.id}",
-        answer: @answer,
-        attachments: attachments,
-        question: @question
+      "answers-question-#{@question.id}",
+      answer: @answer,
+      attachments: attachments,
+      question: @question
     )
   end
 end

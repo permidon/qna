@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_question, only: [:show, :edit, :update, :destroy]
-  before_action :check_owner, only: [:edit, :update, :destroy]
+  before_action :set_question, only: [:show, :update, :destroy]
+  before_action :check_owner, only: [:update, :destroy]
   before_action :build_answer, only: :show
   before_action :set_gon_variable, only: :show
 
@@ -66,7 +66,7 @@ class QuestionsController < ApplicationController
       ApplicationController.render(
         partial: 'questions/short_question',
         locals: { question: @question }
-        )
       )
+    )
   end
 end
