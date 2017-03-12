@@ -77,7 +77,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'redirect to questions' do
           delete :destroy, params: { id: answer, format: :js }
-          expect(response).to redirect_to question_path
+          expect(response).to redirect_to questions_path
         end
       end
     end
@@ -168,7 +168,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'redirect to questions' do
           patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
-          expect(response).to redirect_to question_path
+          expect(response).to redirect_to questions_path
         end
       end
     end
@@ -240,7 +240,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'redirect to questions' do
           patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
-          expect(response).to redirect_to question_path
+          expect(response).to redirect_to questions_path
         end
       end
     end

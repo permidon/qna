@@ -48,14 +48,14 @@ class AnswersController < ApplicationController
   def check_question_owner
     unless current_user.author_of?(@question)
       flash[:error] = 'You have no permission to do this action'
-      redirect_to question_path
+      redirect_to questions_path
     end
   end
 
   def check_answer_owner
     unless current_user.author_of?(@answer)
       flash[:error] = 'You have no permission to do this action'
-      redirect_to question_path
+      redirect_to questions_path
     end
   end
 
