@@ -4,30 +4,26 @@
 
 ready = ->
   $('.vote-up-link, .vote-down-link').bind 'ajax:success', (e, data, status, xhr) ->
-    vote = xhr.responseJSON.vote
-    rating = xhr.responseJSON.rating
+    vote = xhr.responseJSON
     vote_div = '.' + 'vote-' + vote.votable_type.toLowerCase() + '-' + vote.votable_id
-#    $(vote_div + " .rating" + " .rating-value").html("<p> Rating: " + rating + "</p>")
     $(vote_div + " .vote-reset-link").attr("href", "/votes/" + vote.id).show()
     $(vote_div + " .vote-up-link").hide()
     $(vote_div + " .vote-down-link").hide()
     $(".vote-alert").html("")
   .bind 'ajax:error', (e, xhr, status, error) ->
-    errors = xhr.responseJSON
+    errors = xhr.responseJSON.errors
     $.each errors, (index, value) ->
       $(".vote-alert").html("<p>" + value + "</p>")
 
   $('.vote-reset-link').bind 'ajax:success', (e, data, status, xhr) ->
-    vote = xhr.responseJSON.vote
-    rating = xhr.responseJSON.rating
+    vote = xhr.responseJSON
     vote_div = '.' + 'vote-' + vote.votable_type.toLowerCase() + '-' + vote.votable_id
-#    $(vote_div + " .rating" + " .rating-value").html("<p> Rating: " + rating + "</p>")
     $(vote_div + " .vote-reset-link").hide()
     $(vote_div + " .vote-up-link").show()
     $(vote_div + " .vote-down-link").show()
     $(".vote-alert").html("")
   .bind 'ajax:error', (e, xhr, status, error) ->
-    errors = xhr.responseJSON
+    errors = xhr.responseJSON.errors
     $.each errors, (index, value) ->
       $(".vote-alert").html("<p>" + value + "</p>")
 

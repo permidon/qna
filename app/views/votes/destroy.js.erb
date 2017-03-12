@@ -1,0 +1,12 @@
+<% if @vote.errors.present? %>
+  $('.vote-alert').html('');
+  <% @answer.errors.full_messages.each do |message| %>
+    $('.vote-alert').html('<%= j message %>');
+  <% end %>
+<% else %>
+  <% vote_div = ".vote-#{@vote.votable_type.downcase}-#{@vote.votable_id}"%>
+  $("<%= vote_div %> .vote-reset-link").hide()
+  $("<%= vote_div %> .vote-up-link").show()
+  $("<%= vote_div %> .vote-down-link").show()
+  $(".vote-alert").html('');
+<% end %>
