@@ -2,15 +2,13 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_commentable
 
-  after_action :publish_comment, only: [:create]
+  after_action :publish_comment
+
+  respond_to :json
 
   def create
-    @comment = current_user.comments.new(body: comment_params[:body], commentable: @commentable)
-    if @comment.save
-      render json: { comment: @comment }
-    else
-      render json: @comment.errors.full_messages, status: :unprocessable_entity
-    end
+    @comment = @commentable.comments.create(comment_params.merge(user: current_user))
+    respond_with(@comment, location: @commentable, status: 200)
   end
 
   private
@@ -28,7 +26,7 @@ class CommentsController < ApplicationController
   def publish_comment
     return if @comment.errors.any?
     ActionCable.server.broadcast(
-        'comments', @comment
+      'comments', @comment
     )
   end
 end

@@ -75,9 +75,9 @@ RSpec.describe AnswersController, type: :controller do
           expect { delete :destroy, params: { id: answer, format: :js } }.to_not change(Answer, :count)
         end
 
-        it 'redirects to index view' do
+        it 'redirect to questions' do
           delete :destroy, params: { id: answer, format: :js }
-          expect(response).to render_template :destroy
+          expect(response).to redirect_to questions_path
         end
       end
     end
@@ -166,9 +166,9 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer.body).to_not eq 'new body'
         end
 
-        it 'render update template' do
+        it 'redirect to questions' do
           patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
-          expect(response).to render_template :update
+          expect(response).to redirect_to questions_path
         end
       end
     end
@@ -238,9 +238,9 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer).to_not be_best
         end
 
-        it 'render best template' do
+        it 'redirect to questions' do
           patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
-          expect(response).to render_template :mark_best
+          expect(response).to redirect_to questions_path
         end
       end
     end

@@ -1,15 +1,25 @@
 class AttachmentsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_attachment
+  before_action :check_owner
+
+  respond_to :js
 
   def destroy
+    respond_with(@attachment.destroy)
+  end
+
+  private
+
+  def set_attachment
     @attachment = Attachment.find(params[:id])
     @attachable = @attachment.attachable
+  end
 
-    if current_user.author_of?(@attachable)
-      @attachment.destroy
-      flash[:notice] ='The attachment has been successfully deleted.'
-    else
-      flash[:alert] ='You can not delete this attachment.'
+  def check_owner
+    unless current_user.author_of?(@attachable)
+      flash[:error] = 'You have no permission to do this action'
+      redirect_to questions_path
     end
   end
 end

@@ -10,21 +10,17 @@ ready = ->
     $('form#new-' + commentable_type + '-' + commentable_id + '-comment').show()
 
   $('.new-comment').bind 'ajax:success', (e, data, status, xhr) ->
-    comment = xhr.responseJSON.comment
+    comment = xhr.responseJSON
     new_comment = '#new-' + comment.commentable_type.toLowerCase() + '-' + comment.commentable_id + '-comment'
     comment_form = 'form#new-' + comment.commentable_type.toLowerCase() + '-' + comment.commentable_id + '-comment'
     $(new_comment + ' .new-comment-form').val('');
     $(comment_form).hide()
     $(".comment-errors").html('')
 
-# Прорисовку коммента реализовал через ActionCable, очистку формы и стирание ошибок оставил тут,
-# т.к. если решать это через ActionCable, форма очистится и скроется и для другого пользователя,
-# который в данный момент комментирует этот же вопрос или ответ
-
   .bind 'ajax:error', (e, xhr, status, error) ->
-    errors = xhr.responseJSON
+    errors = xhr.responseJSON.errors
     $.each errors, (index, value) ->
-      $(".comment-errors").html("<p>" + value + "</p>")
+      $(".comment-errors").html("<p>" + index + ' ' + value + "</p>")
 
   App.cable.subscriptions.create('CommentsChannel', {
     connected: ->

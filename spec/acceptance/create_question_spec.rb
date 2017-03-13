@@ -18,7 +18,7 @@ feature 'Create question', %q{
     fill_in 'Body', with: question.body
     click_on 'Create'
 
-    expect(page).to have_content 'The question has been successfully created.'
+    expect(page).to have_content 'Question was successfully created.'
     expect(page).to have_content question.title
     expect(page).to have_content question.body
   end
@@ -63,7 +63,7 @@ feature 'Create question', %q{
         fill_in 'Body', with: question.body
         click_on 'Create'
 
-        expect(page).to have_content 'The question has been successfully created.'
+        expect(page).to have_content 'Question was successfully created.'
         expect(page).to have_content question.title
         expect(page).to have_content question.body
       end

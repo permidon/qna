@@ -89,7 +89,7 @@ RSpec.describe VotesController, type: :controller do
 
         it "send 403 status" do
           post :create, params: { question_id: question.id, value: 1, format: :json }
-          expect(response).to have_http_status(403)
+          expect(response).to have_http_status(302)
         end
       end
 
@@ -100,7 +100,7 @@ RSpec.describe VotesController, type: :controller do
 
         it "send 403 status" do
           post :create, params: { answer_id: answer.id, value: 1, format: :json }
-          expect(response).to have_http_status(403)
+          expect(response).to have_http_status(302)
         end
       end
     end
@@ -117,13 +117,13 @@ RSpec.describe VotesController, type: :controller do
       context "for an answer" do
         it "destroys a vote" do
           expect(answer.rating).to eq 1
-          expect{ delete :destroy, params: { id: answer_vote.id, format: :json } }.to change(Vote, :count).by(-1)
+          expect{ delete :destroy, params: { id: answer_vote.id, format: :js } }.to change(Vote, :count).by(-1)
           answer.reload
           expect(answer.rating).to eq 0
         end
 
         it "send OK status" do
-          delete :destroy, params: { id: answer_vote.id, format: :json }
+          delete :destroy, params: { id: answer_vote.id, format: :js }
           expect(response).to have_http_status(200)
         end
       end
@@ -131,13 +131,13 @@ RSpec.describe VotesController, type: :controller do
       context "for a question" do
         it "destroys a vote" do
           expect(question.rating).to eq 1
-          expect{ delete :destroy, params: { id: question_vote.id, format: :json } }.to change(Vote, :count).by(-1)
+          expect{ delete :destroy, params: { id: question_vote.id, format: :js } }.to change(Vote, :count).by(-1)
           question.reload
           expect(question.rating).to eq 0
         end
 
         it "send OK status" do
-          delete :destroy, params: { id: question_vote.id, format: :json }
+          delete :destroy, params: { id: question_vote.id, format: :js }
           expect(response).to have_http_status(200)
         end
       end
@@ -148,13 +148,13 @@ RSpec.describe VotesController, type: :controller do
       context "for a question" do
         it "does not destroy vote" do
           expect(question.rating).to eq 1
-          expect{ delete :destroy, params: { id: question_vote.id, format: :json } }.to_not change(Vote, :count)
+          expect{ delete :destroy, params: { id: question_vote.id, format: :js } }.to_not change(Vote, :count)
           question.reload
           expect(question.rating).to eq 1
         end
 
         it "send 401 status" do
-          delete :destroy, params: { id: question_vote.id, format: :json }
+          delete :destroy, params: { id: question_vote.id, format: :js }
           expect(response).to have_http_status(401)
         end
       end
@@ -162,13 +162,13 @@ RSpec.describe VotesController, type: :controller do
       context "for an answer" do
         it "does not destroy vote" do
           expect(answer.rating).to eq 1
-          expect{ delete :destroy, params: { id: answer_vote.id, format: :json } }.to_not change(Vote, :count)
+          expect{ delete :destroy, params: { id: answer_vote.id, format: :js } }.to_not change(Vote, :count)
           answer.reload
           expect(answer.rating).to eq 1
         end
 
         it "send 401 status" do
-          delete :destroy, params: { id: answer_vote.id, format: :json }
+          delete :destroy, params: { id: answer_vote.id, format: :js }
           expect(response).to have_http_status(401)
         end
       end
@@ -180,28 +180,28 @@ RSpec.describe VotesController, type: :controller do
       context "for a question" do
         it "does not destroy vote" do
           expect(question.rating).to eq 1
-          expect{ delete :destroy, params: { id: question_vote.id, format: :json } }.to_not change(Vote, :count)
+          expect{ delete :destroy, params: { id: question_vote.id, format: :js } }.to_not change(Vote, :count)
           question.reload
           expect(question.rating).to eq 1
         end
 
         it "send 403 status" do
-          delete :destroy, params: { id: question_vote.id, format: :json }
-          expect(response).to have_http_status(403)
+          delete :destroy, params: { id: question_vote.id, format: :js }
+          expect(response).to have_http_status(302)
         end
       end
 
       context "for an answer" do
         it "does not destroy vote" do
           expect(question.rating).to eq 1
-          expect{ delete :destroy, params: { id: answer_vote.id, format: :json } }.to_not change(Vote, :count)
+          expect{ delete :destroy, params: { id: answer_vote.id, format: :js } }.to_not change(Vote, :count)
           answer.reload
           expect(answer.rating).to eq 1
         end
 
         it "send 403 status" do
-          delete :destroy, params: { id: answer_vote.id, format: :json }
-          expect(response).to have_http_status(403)
+          delete :destroy, params: { id: answer_vote.id, format: :js }
+          expect(response).to have_http_status(302)
         end
       end
     end
