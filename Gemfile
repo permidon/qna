@@ -26,6 +26,9 @@ gem 'gon'
 gem 'skim'
 gem 'sprockets', '3.6.3'
 gem 'responders', '~> 2.0'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 group :development, :test do
   gem 'byebug', platform: :mri
@@ -35,6 +38,8 @@ group :development, :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'capybara-webkit'
+  gem 'capybara-email'
+  gem 'letter_opener'
 end
 
 group :development do
@@ -43,7 +48,6 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'rubocop'
-  gem 'letter_opener'
 end
 
 group :test do
