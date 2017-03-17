@@ -14,8 +14,11 @@ feature 'User sign up', %q{
     fill_in 'Password confirmation', with: '12345678'
     click_on 'Sign up'
 
-    expect(page).to have_content 'Welcome! You have signed up successfully.'
-    expect(current_path).to eq root_path
+    open_email('newuser@test.com')
+    current_email.click_link 'Confirm my account'
+    clear_emails
+
+    expect(page).to have_content 'Your email address has been successfully confirmed.'
   end
 
   scenario 'Guest user tries to sign up with existing email' do

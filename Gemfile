@@ -38,7 +38,6 @@ group :development, :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'capybara-webkit'
-  gem 'capybara-email'
   gem 'letter_opener'
 end
 
@@ -52,6 +51,7 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'capybara-email'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

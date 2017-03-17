@@ -1,30 +1,35 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, omniauth_providers: [:facebook]
+  devise :database_authenticatable, :registerable, :confirmable,
+         :recoverable, :rememberable, :trackable, :validatable,
+         :omniauthable, omniauth_providers: [:facebook, :twitter]
 
   has_many :questions
   has_many :answers
   has_many :votes, dependent: :destroy
   has_many :comments
-  has_many :authorizations
+  has_many :authorizations, dependent: :destroy
 
   def author_of?(resource)
     resource.user_id == id
   end
 
-  def self.find_for_oauth(auth) # method of class
+  def self.find_for_oauth(auth)
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
 
     email = auth.info[:email]
     user = User.where(email: email).first
+
     if user
       user.create_authorization(auth)
+      # в реальности тут нужна дополнительная защита
     else
       password = Devise.friendly_token[0, 20]
-      user = User.create!(email: email, password: password, password_confirmation: password)
+      user = User.new(email: email, password: password, password_confirmation: password)
+      user.skip_confirmation! unless auth.unconfirm
+      return nil unless user.save
       user.create_authorization(auth)
     end
     user
