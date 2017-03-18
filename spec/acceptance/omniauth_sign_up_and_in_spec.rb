@@ -34,7 +34,7 @@ feature 'User sign up and sign in via OAuth', %q{
     visit new_user_session_path
     click_on 'Sign in with Twitter'
 
-    fill_in 'auth[info][email]', with: 'user@twitter.com'
+    fill_in 'auth[email]', with: 'user@twitter.com'
     click_on 'Confirm'
 
     open_email 'user@twitter.com'
@@ -66,7 +66,7 @@ feature 'User sign up and sign in via OAuth', %q{
     visit new_user_session_path
     click_on 'Sign in with Twitter'
 
-    fill_in 'auth[info][email]', with: 'existed@mail.com'
+    fill_in 'auth[email]', with: 'existed@mail.com'
     click_on 'Confirm'
 
     expect(page).to have_content 'Successfully authenticated from Twitter account'
@@ -78,7 +78,7 @@ feature 'User sign up and sign in via OAuth', %q{
     visit new_user_session_path
     click_on 'Sign in with Twitter'
 
-    fill_in 'auth[info][email]', with: 'user@twitter.com'
+    fill_in 'auth[email]', with: 'user@twitter.com'
     click_on 'Confirm'
 
     expect(page).to have_content 'Resend confirmation instructions'

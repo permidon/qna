@@ -4,9 +4,6 @@
     .field
       = label_tag 'Email'
       br
-      = email_field 'auth[info]', :email, autofocus: true
-    = hidden_field_tag 'auth[unconfirm]', 'true'
-    = hidden_field_tag 'auth[provider]', @omni_auth.provider
-    = hidden_field_tag 'auth[uid]', @omni_auth.uid
+      = email_field 'auth', 'email', autofocus: true
     br
     = submit_tag 'Confirm'
