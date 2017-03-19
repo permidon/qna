@@ -1,0 +1,9 @@
+.email-confirmation
+  h2 Please confirm your email address
+  =form_tag confirm_email_path, method: :post
+    .field
+      = label_tag 'Email'
+      br
+      = email_field 'auth', 'email', autofocus: true
+    br
+    = submit_tag 'Confirm'
