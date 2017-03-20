@@ -25,5 +25,4 @@
     div class="comments-question-#{question.id}"
       = render question.comments
   .new-comment
-    - if user_signed_in?
-      = render 'comments/form', commentable: question
+    = render 'comments/form', commentable: question if can?(:create, Comment)

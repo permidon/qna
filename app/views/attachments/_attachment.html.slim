@@ -1,4 +1,4 @@
 ul.list-unstyled.list-inline
   li= link_to a.file.identifier, a.file.url
-  li= link_to 'Delete file', a, method: :delete, remote: true, class: 'text-warning' if user_signed_in? && current_user.author_of?(attachable)
+  li= link_to 'Delete file', a, method: :delete, remote: true, class: 'text-warning' if can?(:destroy, Attachment)
   br

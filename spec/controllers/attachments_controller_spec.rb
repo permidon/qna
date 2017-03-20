@@ -45,12 +45,12 @@ RSpec.describe AttachmentsController, type: :controller do
 
       it 'render question view after trying to delete the question\'s file' do
         delete :destroy, params: { id: q_attachment, format: :js }
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
 
       it 'render question view after trying to delete the answer\'s file' do
         delete :destroy, params: { id: a_attachment, format: :js }
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
     end
   end

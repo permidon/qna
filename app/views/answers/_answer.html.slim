@@ -1,8 +1,7 @@
 div id="answer-#{answer.id}"
   ul.list-unstyled
     - if answer.persisted?
-      - if answer.best?
-        li= 'Best Answer'
+      li= 'Best Answer' if answer.best?
       li.lead= answer.body
   p.small Attachments:
   div
@@ -11,21 +10,21 @@ div id="answer-#{answer.id}"
         = render 'attachments/attachment', a: a, attachable: answer
   .answer-rating
     = render 'votes/vote', votable: answer
-  - if user_signed_in? && current_user.author_of?(answer)
-    ul.list-unstyled.list-inline
+  ul.list-unstyled.list-inline
+    - if can?(:update, answer)
       li= link_to 'Edit answer', '', class: 'edit-answer-link', data: {answer_id: answer.id}
       li= form_for answer, remote: true, html: {id: "edit-answer-#{answer.id}"} do |f|
         p= f.label :body, "Answer"
         .edit-answer-errors-form
         p= f.text_area :body
         p= f.submit 'Save Answer'
+    - if can?(:destroy, answer)
       li= link_to 'Delete answer', answer_path(answer), method: :delete, class: 'delete-answer-link text-warning', remote: true
-  - if user_signed_in? && current_user.author_of?(answer.question)
+  - if can?(:mark_best, answer)
     p= link_to answer.best? ? 'Remove the mark of best answer' : 'Mark answer as the best', mark_best_answer_path(answer), method: :patch, remote: true
   .comments
     p.small Comments:
     div class="comments-answer-#{answer.id}"
       = render answer.comments
     .new-comment
-      - if user_signed_in?
-        = render 'comments/form', commentable: answer
+      = render 'comments/form', commentable: answer if can?(:create, Comment)
