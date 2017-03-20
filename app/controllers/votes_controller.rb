@@ -10,6 +10,8 @@ class VotesController < ApplicationController
   respond_to :json, only: :create
   respond_to :js, only: :destroy
 
+  authorize_resource
+
   def create
     @vote = current_user.votes.create(value: params[:value], votable: @votable)
     respond_with(@vote, location: @votable, status: 200)
