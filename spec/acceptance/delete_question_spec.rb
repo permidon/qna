@@ -8,12 +8,24 @@ feature 'Delete question', %q{
 
   given(:user) { create(:user) }
   given(:bad_user) { create(:user, email: 'baduser@test.com') }
+  given(:admin) { create(:admin) }
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
   given!(:answer2) { create(:answer, question: question, user: bad_user) }
 
   scenario 'Authenticated user deletes his own question' do
     sign_in(user)
+
+    visit question_path(question)
+    click_on 'Delete question'
+
+    expect(page).to have_content 'Question was successfully destroyed.'
+    expect(current_path).to eq questions_path
+    expect(page).to have_no_content question.title
+  end
+
+  scenario 'Admin deletes a question' do
+    sign_in(admin)
 
     visit question_path(question)
     click_on 'Delete question'

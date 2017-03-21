@@ -26,7 +26,11 @@ class Ability
   def user_abilities
     quest_abilities
 
-    can :create, [Question, Answer, Comment, Vote]
+    can :create, [Question, Answer, Comment]
+
+    can :create, Vote do |vote|
+      vote.votable.user_id != user.id
+    end
 
     can :update, [Question, Answer], user: user
 
@@ -36,8 +40,8 @@ class Ability
       attachment.attachable.user_id == user.id
     end
 
-    can :destroy, [Vote] do |vote|
-      vote.attachable.user_id == user.id
+    can :destroy, Vote do |vote|
+      vote.user_id == user.id
     end
 
     can :mark_best, Answer do |answer|

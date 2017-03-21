@@ -8,11 +8,26 @@ feature 'Delete question\'s file', %q{
 
   given(:author) { create(:user) }
   given(:user) { create(:user) }
+  given(:admin) { create(:admin) }
   given!(:question) { create(:question, user: author) }
   given!(:attachment) { create(:attachment, attachable: question) }
 
   scenario 'Authenticated user deletes his own question\'s file', js: true do
     sign_in(author)
+
+    visit question_path(question)
+
+    within '.question' do
+      click_on 'Delete file'
+    end
+
+    within '.question' do
+      expect(page).to have_no_link attachment.file.identifier, href: attachment.file.url
+    end
+  end
+
+  scenario 'Admin deletes other question\'s file', js: true do
+    sign_in(admin)
 
     visit question_path(question)
 
