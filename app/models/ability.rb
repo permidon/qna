@@ -36,7 +36,7 @@ class Ability
 
     can :destroy, [Question, Answer], user: user
 
-    can :destroy, [Attachment] do |attachment|
+    can :destroy, Attachment do |attachment|
       attachment.attachable.user_id == user.id
     end
 

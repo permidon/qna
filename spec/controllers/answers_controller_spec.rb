@@ -334,9 +334,5 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to have_http_status(401)
       end
     end
-
-    context 'user is admin' do
-
-    end
   end
 end
