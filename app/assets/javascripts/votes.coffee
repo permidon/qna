@@ -14,6 +14,7 @@ ready = ->
     errors = xhr.responseJSON.errors
     $.each errors, (index, value) ->
       $(".vote-alert").html("<p>" + value + "</p>")
+    $('.error-messages').html(xhr.responseJSON) if error = 'Forbidden'
 
   $('.vote-reset-link').bind 'ajax:success', (e, data, status, xhr) ->
     vote = xhr.responseJSON
@@ -26,6 +27,9 @@ ready = ->
     errors = xhr.responseJSON.errors
     $.each errors, (index, value) ->
       $(".vote-alert").html("<p>" + value + "</p>")
+    $('.error-messages').html(xhr.responseJSON) if error = 'Forbidden'
+
+
 
   App.cable.subscriptions.create('VotesChannel', {
     connected: ->

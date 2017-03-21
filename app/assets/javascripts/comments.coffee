@@ -21,6 +21,7 @@ ready = ->
     errors = xhr.responseJSON.errors
     $.each errors, (index, value) ->
       $(".comment-errors").html("<p>" + index + ' ' + value + "</p>")
+    $('.error-messages').html(xhr.responseJSON) if error = 'Forbidden'
 
   App.cable.subscriptions.create('CommentsChannel', {
     connected: ->

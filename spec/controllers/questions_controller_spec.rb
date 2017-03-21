@@ -207,8 +207,8 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question.body).to eq question.body
         end
 
-        it 're-renders update view' do
-          expect(response).to redirect_to root_path
+        it 'sends 403 status' do
+          expect(response).to have_http_status(403)
         end
       end
     end

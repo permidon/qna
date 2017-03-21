@@ -76,9 +76,9 @@ RSpec.describe AnswersController, type: :controller do
           expect { delete :destroy, params: { id: answer, format: :js } }.to_not change(Answer, :count)
         end
 
-        it 'redirect to questions' do
+        it 'sends 403 status' do
           delete :destroy, params: { id: answer, format: :js }
-          expect(response).to redirect_to root_path
+          expect(response).to have_http_status(403)
         end
       end
     end
@@ -183,9 +183,9 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer.body).to_not eq 'new body'
         end
 
-        it 'redirect to questions' do
+        it 'sends 403 status' do
           patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
-          expect(response).to redirect_to root_path
+          expect(response).to have_http_status(403)
         end
       end
     end
@@ -283,9 +283,9 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer).to_not be_best
         end
 
-        it 'redirect to questions' do
+        it 'sends 403 status' do
           patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
-          expect(response).to redirect_to root_path
+          expect(response).to have_http_status(403)
         end
       end
     end

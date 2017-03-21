@@ -16,7 +16,7 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { question_id: question.id, value: 1, format: :json } }.to change(question.votes, :count).by(1)
         end
 
-        it "send OK status" do
+        it "sends OK status" do
           post :create, params: { question_id: question.id, value: 1, format: :json }
           expect(response).to have_http_status(200)
         end
@@ -27,7 +27,7 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { answer_id: answer.id, value: 1, format: :json } }.to change(answer.votes, :count).by(1)
         end
 
-        it "send OK status" do
+        it "sends OK status" do
           post :create, params: { answer_id: answer.id, value: 1, format: :json }
           expect(response).to have_http_status(200)
         end
@@ -38,7 +38,7 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { question_id: question.id, value: 2, format: :json } }.to_not change(Vote, :count)
         end
 
-        it "send 422 status" do
+        it "sends 422 status" do
           post :create, params: { question_id: question.id, value: 2, format: :json }
           expect(response).to have_http_status(422)
         end
@@ -49,7 +49,7 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { answer_id: answer.id, value: 2, format: :json } }.to_not change(Vote, :count)
         end
 
-        it "send 422 status" do
+        it "sends 422 status" do
           post :create, params: { answer_id: answer.id, value: 2, format: :json }
           expect(response).to have_http_status(422)
         end
@@ -64,7 +64,7 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { question_id: question.id, value: 1, format: :json } }.to change(question.votes, :count).by(1)
         end
 
-        it "send OK status" do
+        it "sends OK status" do
           post :create, params: { question_id: question.id, value: 1, format: :json }
           expect(response).to have_http_status(200)
         end
@@ -75,7 +75,7 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { answer_id: answer.id, value: 1, format: :json } }.to change(answer.votes, :count).by(1)
         end
 
-        it "send OK status" do
+        it "sends OK status" do
           post :create, params: { answer_id: answer.id, value: 1, format: :json }
           expect(response).to have_http_status(200)
         end
@@ -86,7 +86,7 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { question_id: question.id, value: 2, format: :json } }.to_not change(Vote, :count)
         end
 
-        it "send 422 status" do
+        it "sends 422 status" do
           post :create, params: { question_id: question.id, value: 2, format: :json }
           expect(response).to have_http_status(422)
         end
@@ -97,7 +97,7 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { answer_id: answer.id, value: 2, format: :json } }.to_not change(Vote, :count)
         end
 
-        it "send 422 status" do
+        it "sends 422 status" do
           post :create, params: { answer_id: answer.id, value: 2, format: :json }
           expect(response).to have_http_status(422)
         end
@@ -110,7 +110,7 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { question_id: question.id, value: 1, format: :json } }.to_not change(Vote, :count)
         end
 
-        it "send 401 status" do
+        it "sends 401 status" do
           post :create, params: { question_id: question.id, value: 1, format: :json }
           expect(response).to have_http_status(401)
         end
@@ -121,7 +121,7 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { answer_id: answer.id, value: 1, format: :json } }.to_not change(Vote, :count)
         end
 
-        it "send 401 status" do
+        it "sends 401 status" do
           post :create, params: { answer_id: answer.id, value: 1, format: :json }
           expect(response).to have_http_status(401)
         end
@@ -136,9 +136,9 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { question_id: question.id, value: 1, format: :json } }.to_not change(Vote, :count)
         end
 
-        it "send 403 status" do
+        it "sends 403 status" do
           post :create, params: { question_id: question.id, value: 1, format: :json }
-          expect(response).to have_http_status(302)
+          expect(response).to have_http_status(403)
         end
       end
 
@@ -147,9 +147,9 @@ RSpec.describe VotesController, type: :controller do
           expect {post :create, params: { answer_id: answer.id, value: 1, format: :json } }.to_not change(Vote, :count)
         end
 
-        it "send 403 status" do
+        it "sends 403 status" do
           post :create, params: { answer_id: answer.id, value: 1, format: :json }
-          expect(response).to have_http_status(302)
+          expect(response).to have_http_status(403)
         end
       end
     end
@@ -171,7 +171,7 @@ RSpec.describe VotesController, type: :controller do
           expect(answer.rating).to eq 0
         end
 
-        it "send OK status" do
+        it "sends OK status" do
           delete :destroy, params: { id: answer_vote.id, format: :js }
           expect(response).to have_http_status(200)
         end
@@ -185,7 +185,7 @@ RSpec.describe VotesController, type: :controller do
           expect(question.rating).to eq 0
         end
 
-        it "send OK status" do
+        it "sends OK status" do
           delete :destroy, params: { id: question_vote.id, format: :js }
           expect(response).to have_http_status(200)
         end
@@ -204,7 +204,7 @@ RSpec.describe VotesController, type: :controller do
           expect(answer.rating).to eq 0
         end
 
-        it "send OK status" do
+        it "sends OK status" do
           delete :destroy, params: { id: answer_vote.id, format: :js }
           expect(response).to have_http_status(200)
         end
@@ -218,7 +218,7 @@ RSpec.describe VotesController, type: :controller do
           expect(question.rating).to eq 0
         end
 
-        it "send OK status" do
+        it "sends OK status" do
           delete :destroy, params: { id: question_vote.id, format: :js }
           expect(response).to have_http_status(200)
         end
@@ -234,7 +234,7 @@ RSpec.describe VotesController, type: :controller do
           expect(question.rating).to eq 1
         end
 
-        it "send 401 status" do
+        it "sends 401 status" do
           delete :destroy, params: { id: question_vote.id, format: :js }
           expect(response).to have_http_status(401)
         end
@@ -248,7 +248,7 @@ RSpec.describe VotesController, type: :controller do
           expect(answer.rating).to eq 1
         end
 
-        it "send 401 status" do
+        it "sends 401 status" do
           delete :destroy, params: { id: answer_vote.id, format: :js }
           expect(response).to have_http_status(401)
         end
@@ -266,9 +266,9 @@ RSpec.describe VotesController, type: :controller do
           expect(question.rating).to eq 1
         end
 
-        it "send 403 status" do
+        it "sends 403 status" do
           delete :destroy, params: { id: question_vote.id, format: :js }
-          expect(response).to have_http_status(302)
+          expect(response).to have_http_status(403)
         end
       end
 
@@ -280,9 +280,9 @@ RSpec.describe VotesController, type: :controller do
           expect(answer.rating).to eq 1
         end
 
-        it "send 403 status" do
+        it "sends 403 status" do
           delete :destroy, params: { id: answer_vote.id, format: :js }
-          expect(response).to have_http_status(302)
+          expect(response).to have_http_status(403)
         end
       end
     end
