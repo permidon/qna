@@ -8,11 +8,22 @@ feature 'Delete answer', %q{
 
   given(:user) { create(:user) }
   given(:bad_user) { create(:user, email: 'baduser@test.com') }
+  given(:admin) { create(:admin) }
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
   scenario 'Authenticated user deletes his own answer', js: true do
     sign_in(user)
+
+    visit question_path(question)
+    click_on 'Delete answer'
+
+    expect(current_path).to eq question_path(question)
+    expect(page).to have_no_content answer.body
+  end
+
+  scenario 'Admin deletes deletes other answer', js: true do
+    sign_in(admin)
 
     visit question_path(question)
     click_on 'Delete answer'

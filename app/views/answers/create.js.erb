@@ -6,6 +6,7 @@
 <% else %>
   $('.new-answer-form').val('');
   $('.answer-errors').html('');
+  $('.error-messages').html('');
   $('.answers').append('<%= j render @answer %>');
   $('.nested-fields').remove();
   $('.add_fields').trigger("click");

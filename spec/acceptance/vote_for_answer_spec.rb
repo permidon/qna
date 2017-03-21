@@ -8,6 +8,7 @@ feature 'Vote for an answer', %q{
 
   given(:user) { create(:user) }
   given(:author) { create(:user) }
+  given(:admin) { create(:admin) }
   given(:question) { create(:question, user: author) }
   given!(:answer1) { create(:answer, question: question, user: author) }
 
@@ -33,6 +34,35 @@ feature 'Vote for an answer', %q{
     end
 
     scenario 'User reset a rating of the answer', js: true do
+      within '.answer-rating' do
+        click_on 'Thumbs Up'
+        click_on 'Reset Vote'
+        expect(page).to have_content 'Rating: 0'
+      end
+    end
+  end
+
+  context 'Admin' do
+    background do
+      sign_in(admin)
+      visit question_path(question)
+    end
+
+    scenario 'Admin marks an answer as a good one', js: true do
+      within '.answer-rating' do
+        click_on 'Thumbs Up'
+        expect(page).to have_content 'Rating: 1'
+      end
+    end
+
+    scenario 'Admin marks an answer as a bad one', js: true do
+      within '.answer-rating' do
+        click_on 'Thumbs Down'
+        expect(page).to have_content 'Rating: -1'
+      end
+    end
+
+    scenario 'Admin reset a rating of the answer', js: true do
       within '.answer-rating' do
         click_on 'Thumbs Up'
         click_on 'Reset Vote'

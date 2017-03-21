@@ -8,9 +8,44 @@ feature 'Edit question', %q{
 
   given(:author) { create(:user) }
   given(:user) { create(:user) }
+  given(:admin) { create(:admin) }
   given!(:question) { create(:question, user: author) }
 
   context 'Author edits his own question', js: true do
+    before  do
+      sign_in(author)
+      visit question_path(question)
+      within '.question' do
+        click_on 'Edit question'
+      end
+    end
+    scenario 'with valid attributes', js: true do
+      within '.question' do
+        fill_in 'Title', with: "New Title"
+        fill_in 'Question', with: "New Body"
+        click_on 'Save Question'
+
+        expect(page).to have_no_content question.title
+        expect(page).to have_no_content question.body
+        expect(page).to have_content 'New Title'
+        expect(page).to have_content 'New Body'
+        expect(page).to have_no_selector 'textarea'
+      end
+    end
+
+    scenario 'with invalid attributes', js: true do
+      within '.question' do
+        fill_in 'Title', with: nil
+        fill_in 'Question', with: nil
+        click_on 'Save Question'
+
+        expect(page).to have_content 'Title can\'t be blank'
+        expect(page).to have_content 'Body can\'t be blank'
+      end
+    end
+  end
+
+  context 'Admin edits other question', js: true do
     before  do
       sign_in(author)
       visit question_path(question)

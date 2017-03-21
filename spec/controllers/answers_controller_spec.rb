@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
   let(:answer) { create(:answer, question: question) }
+  let(:admin) { create(:admin) }
 
   describe 'POST #create' do
     context 'user is signed in' do
@@ -75,10 +76,26 @@ RSpec.describe AnswersController, type: :controller do
           expect { delete :destroy, params: { id: answer, format: :js } }.to_not change(Answer, :count)
         end
 
-        it 'redirect to questions' do
+        it 'sends 403 status' do
           delete :destroy, params: { id: answer, format: :js }
-          expect(response).to redirect_to questions_path
+          expect(response).to have_http_status(403)
         end
+      end
+    end
+
+    context 'user is admin' do
+      before { sign_in(admin) }
+
+      let(:user) { create(:user) }
+      let!(:answer) { create(:answer, question: question, user: user) }
+
+      it 'deletes the answer' do
+        expect { delete :destroy, params: { id: answer, format: :js } }.to change(question.answers, :count).by(-1)
+      end
+
+      it 'render question view' do
+        delete :destroy, params: { id: answer, format: :js }
+        expect(response).to render_template :destroy
       end
     end
 
@@ -166,10 +183,38 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer.body).to_not eq 'new body'
         end
 
-        it 'redirect to questions' do
+        it 'sends 403 status' do
           patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
-          expect(response).to redirect_to questions_path
+          expect(response).to have_http_status(403)
         end
+      end
+    end
+
+    context 'user is admin' do
+      before { sign_in(admin) }
+
+      let(:user) { create(:user) }
+      let(:answer) { create(:answer, question: question, user: user) }
+
+      it 'assigns the question to @question' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'assings the requested answer to @answer' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'changes answer attributes' do
+        patch :update, params: { id: answer, question_id: question, answer: { body: 'new body'}, format: :js }
+        answer.reload
+        expect(answer.body).to eq 'new body'
+      end
+
+      it 'render update template' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+        expect(response).to render_template :update
       end
     end
 
@@ -238,10 +283,39 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer).to_not be_best
         end
 
-        it 'redirect to questions' do
+        it 'sends 403 status' do
           patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
-          expect(response).to redirect_to questions_path
+          expect(response).to have_http_status(403)
         end
+      end
+    end
+
+    context 'user is admin' do
+      before { sign_in(admin) }
+
+      let(:user) { create(:user) }
+      let(:question) { create(:question, user: user) }
+      let(:answer) { create(:answer, question: question, user: user) }
+
+      it 'assigns the question to @question' do
+        patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'assings the answer to @answer' do
+        patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'changes answer attributes' do
+        patch :mark_best, params: { id: answer, question_id: question, answer: { best: true }, format: :js }
+        answer.reload
+        expect(answer).to be_best
+      end
+
+      it 'render best template' do
+        patch :mark_best, params: { id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+        expect(response).to render_template :mark_best
       end
     end
 

@@ -1,14 +1,13 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_question, only: :create
-  before_action :set_answer, only: [:update, :destroy, :mark_best]
-  before_action :set_question, only: [:update, :destroy, :mark_best]
-  before_action :check_answer_owner, only: [:update, :destroy]
-  before_action :check_question_owner, only: :mark_best
+  before_action :set_question, only: :create
+  before_action :set_answer_and_question, only: [:update, :destroy, :mark_best]
 
   after_action :publish_answer, only: :create
 
   respond_to :js
+
+  authorize_resource
 
   def create
     respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
@@ -33,30 +32,13 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:body, attachments_attributes: [:file, :id, :_destroy])
   end
 
-  def load_question
+  def set_question
     @question = Question.find(params[:question_id])
   end
 
-  def set_answer
+  def set_answer_and_question
     @answer = Answer.find(params[:id])
-  end
-
-  def set_question
     @question = @answer.question
-  end
-
-  def check_question_owner
-    unless current_user.author_of?(@question)
-      flash[:error] = 'You have no permission to do this action'
-      redirect_to questions_path
-    end
-  end
-
-  def check_answer_owner
-    unless current_user.author_of?(@answer)
-      flash[:error] = 'You have no permission to do this action'
-      redirect_to questions_path
-    end
   end
 
   def publish_answer

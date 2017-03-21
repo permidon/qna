@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
+  let(:admin) { create(:admin) }
 
   describe 'GET #new' do
     context 'user is signed in' do
@@ -112,6 +113,24 @@ RSpec.describe QuestionsController, type: :controller do
         end
       end
 
+      context 'user is admin' do
+        before { sign_in(admin) }
+
+        let(:user) { create(:user) }
+        let!(:question) { create(:question, user: user) }
+
+        context 'user is the author of the question' do
+          it 'deletes the question' do
+            expect { delete :destroy, params: { id: question } }.to change(user.questions, :count).by(-1)
+          end
+
+          it 'redirects to index view' do
+            delete :destroy, params: { id: question }
+            expect(response).to redirect_to questions_path
+          end
+        end
+      end
+
       context 'user is not the author of the question' do
         before { question }
 
@@ -121,7 +140,7 @@ RSpec.describe QuestionsController, type: :controller do
 
         it 'redirects to index view' do
           delete :destroy, params: { id: question }
-          expect(response).to redirect_to questions_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -188,8 +207,8 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question.body).to eq question.body
         end
 
-        it 're-renders update view' do
-          expect(response).to redirect_to questions_path
+        it 'sends 403 status' do
+          expect(response).to have_http_status(403)
         end
       end
     end
@@ -204,6 +223,45 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to sign in page' do
         expect(response).to have_http_status(401)
+      end
+    end
+
+    context 'user is admin' do
+      before { sign_in(admin) }
+
+      let(:user) { create(:user) }
+      let!(:question) { create(:question, user: user) }
+
+      context 'with valid attributes' do
+        it 'assigns the requested question to @question' do
+          patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'changes the question attributes' do
+          patch :update, params: { id: question, question: { title: 'new title', body: 'new body'}, format: :js }
+          question.reload
+          expect(question.title).to eq 'new title'
+          expect(question.body).to eq 'new body'
+        end
+
+        it 'renders update view' do
+          patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+          expect(response).to render_template :update
+        end
+      end
+
+      context 'with invalid attributes' do
+        before { patch :update, params: { id: question, question: { title: 'new title', body: nil}, format: :js } }
+        it 'does not change the question attributes' do
+          question.reload
+          expect(question.title).to eq question.title
+          expect(question.body).to eq question.body
+        end
+
+        it 're-renders update view' do
+          expect(response).to render_template :update
+        end
       end
     end
   end

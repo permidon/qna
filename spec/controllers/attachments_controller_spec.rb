@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe AttachmentsController, type: :controller do
+  let(:admin) { create(:admin) }
   describe 'DELETE #destroy' do
     context 'user is the author of the question or the answer' do
       sign_in_user
@@ -45,10 +46,37 @@ RSpec.describe AttachmentsController, type: :controller do
 
       it 'render question view after trying to delete the question\'s file' do
         delete :destroy, params: { id: q_attachment, format: :js }
-        expect(response).to render_template :destroy
+        expect(response).to have_http_status(403)
       end
 
       it 'render question view after trying to delete the answer\'s file' do
+        delete :destroy, params: { id: a_attachment, format: :js }
+        expect(response).to have_http_status(403)
+      end
+    end
+
+    context 'user is admin' do
+      before { sign_in(admin) }
+
+      let!(:question) { create(:question) }
+      let!(:answer) { create(:answer, question: question) }
+      let!(:q_attachment) { create(:attachment, attachable: question) }
+      let!(:a_attachment) { create(:attachment, attachable: answer) }
+
+      it 'deletes the question\'s file' do
+        expect { delete :destroy, params: { id: q_attachment, format: :js } }.to change(question.attachments, :count).by(-1)
+      end
+
+      it 'deletes the answer\'s file' do
+        expect { delete :destroy, params: { id: a_attachment, format: :js } }.to change(answer.attachments, :count).by(-1)
+      end
+
+      it 'render question view after deleting the question\'s file' do
+        delete :destroy, params: { id: q_attachment, format: :js }
+        expect(response).to render_template :destroy
+      end
+
+      it 'render question view after deleting the answer\'s file' do
         delete :destroy, params: { id: a_attachment, format: :js }
         expect(response).to render_template :destroy
       end
