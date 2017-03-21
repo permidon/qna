@@ -37,7 +37,7 @@ class Ability
     can :destroy, [Question, Answer, Vote], user_id: user.id
 
     can :destroy, Attachment do |attachment|
-      attachment.attachable.user_id == user.id
+      user.author_of?(attachment.attachable)
     end
 
     can :mark_best, Answer do |answer|
