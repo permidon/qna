@@ -10,7 +10,7 @@ class VotesController < ApplicationController
 
   load_resource :question
   load_resource :answer
-  load_and_authorize_resource :vote, :through => [:question, :answer]
+  load_and_authorize_resource :vote, through: [:question, :answer]
 
   def create
     @vote = @votable.votes.create(value: params[:value], user: current_user)
