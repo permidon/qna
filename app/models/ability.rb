@@ -43,5 +43,9 @@ class Ability
     can :mark_best, Answer do |answer|
       user.author_of?(answer.question)
     end
+
+    can :me, User, id: user.id
+
+    can :all_but_me, User, id: user.id
   end
 end

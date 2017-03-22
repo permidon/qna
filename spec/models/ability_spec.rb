@@ -24,6 +24,7 @@ describe Ability do
   describe 'for user' do
     let(:user) { create :user }
     let(:other) { create :user }
+    let(:user_list) { create_list(:user, 3) }
 
     let(:user_question) { create :question, user: user }
     let(:other_question) { create :question, user: other }
@@ -96,6 +97,14 @@ describe Ability do
 
       it { should_not be_able_to :create, user_question_vote }
       it { should_not be_able_to :create, user_answer_vote }
+    end
+
+    context 'API' do
+      it { should be_able_to :me, user }
+      it { should be_able_to :all_but_me, user }
+
+      it { should_not be_able_to :me, other }
+      it { should_not be_able_to :all_but_me, other }
     end
   end
 end
