@@ -24,7 +24,6 @@ describe Ability do
   describe 'for user' do
     let(:user) { create :user }
     let(:other) { create :user }
-    let(:user_list) { create_list(:user, 3) }
 
     let(:user_question) { create :question, user: user }
     let(:other_question) { create :question, user: other }
