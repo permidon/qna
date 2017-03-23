@@ -30,6 +30,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'cancancan'
+gem 'doorkeeper'
 
 group :development, :test do
   gem 'byebug', platform: :mri
@@ -53,6 +54,7 @@ end
 group :test do
   gem 'shoulda-matchers'
   gem 'capybara-email'
+  gem 'json_spec'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
