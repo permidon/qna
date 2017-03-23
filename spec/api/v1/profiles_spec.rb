@@ -61,6 +61,10 @@ describe 'Profile API' do
         expect(response).to be_success
       end
 
+      it 'returns list of profiles' do
+        expect(response.body).to have_json_size(2)
+      end
+
       %w(id email created_at updated_at admin).each do |attr|
         it "contains other users data - #{attr}" do
           expect(response.body).to be_json_eql(users[0].send(attr.to_sym).to_json).at_path("0/#{attr}")

@@ -24,6 +24,7 @@ Rails.application.routes.draw do
         get :me, on: :collection
         get :all_but_me, on: :collection
       end
+      resources :questions
     end
   end
 
