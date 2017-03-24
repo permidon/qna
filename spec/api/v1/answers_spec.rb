@@ -2,8 +2,10 @@ require 'acceptance/acceptance_helper'
 
 describe 'Answers API' do
   let!(:question) { create(:question) }
-  # Создаю один объект, т.к. при создании коллекции возникает путаница в адресации json
+
+  # Создаю один объект, т.к. при создании коллекции возникает путаница в адресации json (default scope?)
   let!(:answer) { create(:answer, question: question) }
+
   describe 'GET /index' do
     context 'unauthorized' do
       it 'returns 401 status if there is no access_token' do
@@ -43,7 +45,7 @@ describe 'Answers API' do
     let!(:question) { create(:question) }
     let!(:answer) { create(:answer, question: question) }
 
-    # Создаю по одному объекту, т.к. при создании коллекции возникает путаница в адресации json
+    # Создаю по одному объекту, т.к. при создании коллекций возникает путаница в адресации json (default scope?)
     let!(:comment) { create(:comment, commentable: answer, user: user) }
     let!(:attachment) { create(:attachment, attachable: answer) }
 

@@ -57,9 +57,10 @@ describe 'Questions API' do
   describe 'GET /show' do
     let!(:user) { create(:user) }
     let!(:question) { create(:question) }
+
+    # Создаю по одному объекту, т.к. при создании коллекций возникает путаница в адресации json (default scope?)
     let!(:comment) { create(:comment, commentable: question, user: user) }
     let!(:attachment) { create(:attachment, attachable: question) }
-    # Создаю по одному объекту, т.к. при создании коллекции возникает об при обращении
 
     context 'unauthorized' do
       it 'returns 401 status if there is no access_token' do
