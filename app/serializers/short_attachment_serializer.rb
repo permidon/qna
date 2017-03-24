@@ -1,4 +1,4 @@
-class AttachmentSerializer < ActiveModel::Serializer
+class ShortAttachmentSerializer < ActiveModel::Serializer
   attributes :id, :file_url
 
   def file_url

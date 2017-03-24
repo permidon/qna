@@ -103,7 +103,6 @@ describe Ability do
       it { should be_able_to :all_but_me, user }
 
       it { should_not be_able_to :me, other }
-      it { should_not be_able_to :all_but_me, other }
     end
   end
 end
