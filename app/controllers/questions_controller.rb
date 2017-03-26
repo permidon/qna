@@ -4,8 +4,6 @@ class QuestionsController < ApplicationController
   before_action :build_answer, only: :show
   before_action :set_gon_variable, only: :show
 
-  after_action :publish_question, only: :create
-
   respond_to :js, only: :update
 
   authorize_resource
@@ -51,16 +49,5 @@ class QuestionsController < ApplicationController
 
   def set_gon_variable
     gon.user_id = current_user.id if user_signed_in?
-  end
-
-  def publish_question
-    return if @question.errors.any?
-    ActionCable.server.broadcast(
-      'questions',
-      ApplicationController.render(
-        partial: 'questions/short_question',
-        locals: { question: @question }
-      )
-    )
   end
 end
