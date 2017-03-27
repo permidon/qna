@@ -1,15 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Vote do
+  it_behaves_like "User References"
+
   it { should belong_to :votable }
-  it { should belong_to :user }
-
-  it { should validate_presence_of :user_id}
   it { should validate_presence_of :value }
-
-  # it { should validate_uniqueness_of(:user_id).scoped_to(:votable_id, :votable_type)}
-  # Не проходит если выполняется rating_increment после after_create
-
   it { should validate_inclusion_of(:value).in_array([-1, 1]) }
   it { should validate_inclusion_of(:votable_type).in_array(['Question', 'Answer']) }
 
