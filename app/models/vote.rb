@@ -10,6 +10,8 @@ class Vote < ApplicationRecord
   after_create :rating_increment
   after_destroy :rating_decrement
 
+  after_commit :publish_rating
+
   private
 
   def rating_increment
@@ -18,5 +20,14 @@ class Vote < ApplicationRecord
 
   def rating_decrement
     votable.decrement!(:rating, value)
+  end
+
+  def publish_rating
+    return unless defined?(self)
+    return if self.errors.any?
+    ActionCable.server.broadcast(
+        'votes',
+        { vote: self, rating: self.votable.rating }
+    )
   end
 end

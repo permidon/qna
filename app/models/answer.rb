@@ -19,6 +19,8 @@ class Answer < ApplicationRecord
     end
   end
 
+  private
+
   def publish_answer
     return if self.errors.any?
 
