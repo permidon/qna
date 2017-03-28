@@ -34,7 +34,7 @@ feature 'Add files to answer', %q{
       inputs[0].set("#{Rails.root}/spec/rails_helper.rb")
       inputs[1].set("#{Rails.root}/spec/spec_helper.rb")
 
-      click_on 'Post Your Answer'
+      page.execute_script %($('form#new_answer').submit())
     end
 
       expect(page).to have_link 'rails_helper.rb', href: '/uploads/attachment/file/1/rails_helper.rb'

@@ -1,8 +1,6 @@
 class Api::V1::AnswersController < Api::V1::BaseController
   before_action :set_question, only: [:index, :create]
 
-  after_action :publish_answer, only: :create
-
   authorize_resource
 
   def show
@@ -28,16 +26,5 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
   def set_question
     @question = Question.find(params[:question_id])
-  end
-
-  def publish_answer
-    return if @answer.errors.any?
-    attachments = []
-    ActionCable.server.broadcast(
-        "answers-question-#{@question.id}",
-        answer: @answer,
-        attachments: attachments,
-        question: @question
-    )
   end
 end

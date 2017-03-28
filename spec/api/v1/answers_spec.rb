@@ -1,32 +1,15 @@
 require 'acceptance/acceptance_helper'
 
 describe 'Answers API' do
+  let(:access_token) { create(:access_token) }
   let!(:question) { create(:question) }
-
-  # Создаю один объект, т.к. при создании коллекции возникает путаница в адресации json (default scope?)
   let!(:answer) { create(:answer, question: question) }
 
   describe 'GET /index' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        get "/api/v1/questions/#{question.id}/answers", params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        get "/api/v1/questions/#{question.id}/answers", params: { format: :json, access_token: '1234' }
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like "API Authenticable"
 
     context 'authorized' do
-      let(:access_token) { create(:access_token) }
-
       before { get "/api/v1/questions/#{question.id}/answers", params: { format: :json, access_token: access_token.token } }
-
-      it 'returns 200 status' do
-        expect(response).to be_success
-      end
 
       it 'returns list of answers' do
         expect(response.body).to have_json_size(1)
@@ -38,37 +21,21 @@ describe 'Answers API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get "/api/v1/questions/#{question.id}/answers", params: { format: :json }.merge(options)
+    end
   end
 
   describe 'GET /show' do
     let!(:user) { create(:user) }
-    let!(:question) { create(:question) }
-    let!(:answer) { create(:answer, question: question) }
-
-    # Создаю по одному объекту, т.к. при создании коллекций возникает путаница в адресации json (default scope?)
     let!(:comment) { create(:comment, commentable: answer, user: user) }
     let!(:attachment) { create(:attachment, attachable: answer) }
 
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        get "/api/v1/answers/#{answer.id}", params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        get "/api/v1/answers/#{answer.id}", params: { format: :json, access_token: '1234' }
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like "API Authenticable"
 
     context 'authorized' do
-      let(:access_token) { create(:access_token) }
-
       before { get "/api/v1/answers/#{answer.id}", params: { format: :json, access_token: access_token.token } }
-
-      it 'returns 200 status' do
-        expect(response).to be_success
-      end
 
       %w(id body created_at updated_at).each do |attr|
         it "answer object contains #{attr}" do
@@ -100,24 +67,16 @@ describe 'Answers API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get "/api/v1/answers/#{answer.id}", params: { format: :json }.merge(options)
+    end
   end
 
   describe 'POST /create' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        post "/api/v1/questions/#{question.id}/answers", params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        post "/api/v1/questions/#{question.id}/answers", params: { format: :json, access_token: '1234' }
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like "API Authenticable"
 
     context 'authorized' do
-      let(:access_token) { create(:access_token) }
-
       before { post "/api/v1/questions/#{question.id}/answers", params: { answer: answer, format: :json, access_token: access_token.token } }
 
       context 'with valid attributes' do
@@ -144,5 +103,9 @@ describe 'Answers API' do
         end
       end
     end
+  end
+
+  def do_request(options = {})
+    post "/api/v1/questions/#{question.id}/answers", params: { answer: attributes_for(:answer, question: question, body: 'New_Body'), format: :json }.merge(options)
   end
 end

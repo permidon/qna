@@ -3,8 +3,6 @@ class AnswersController < ApplicationController
   before_action :set_question, only: :create
   before_action :set_answer_and_question, only: [:update, :destroy, :mark_best]
 
-  after_action :publish_answer, only: :create
-
   respond_to :js
 
   authorize_resource
@@ -39,25 +37,5 @@ class AnswersController < ApplicationController
   def set_answer_and_question
     @answer = Answer.find(params[:id])
     @question = @answer.question
-  end
-
-  def publish_answer
-    return if @answer.errors.any?
-
-    attachments = []
-    @answer.attachments.each do |a|
-      attachment = {}
-      attachment[:id] = a.id
-      attachment[:url] = a.file.url
-      attachment[:name] = a.file.identifier
-      attachments << attachment
-    end
-
-    ActionCable.server.broadcast(
-      "answers-question-#{@question.id}",
-      answer: @answer,
-      attachments: attachments,
-      question: @question
-    )
   end
 end

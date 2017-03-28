@@ -3,8 +3,6 @@ class VotesController < ApplicationController
   before_action :set_votable, only: [:create]
   before_action :set_vote_and_votable, only: [:destroy]
 
-  after_action :publish_rating, only: [:create, :destroy]
-
   respond_to :json, only: :create
   respond_to :js, only: :destroy
 
@@ -32,14 +30,5 @@ class VotesController < ApplicationController
     votable_id = params.keys.detect{ |k| k.to_s =~ /.*_id/ }
     model_klass = votable_id.chomp('_id').classify.constantize
     @votable = model_klass.find(params[votable_id])
-  end
-
-  def publish_rating
-    return unless defined?(@vote)
-    return if @vote.errors.any?
-    ActionCable.server.broadcast(
-      'votes',
-      { vote: @vote, rating: @vote.votable.rating }
-    )
   end
 end
