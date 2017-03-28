@@ -10,27 +10,7 @@ RSpec.describe VotesController, type: :controller do
 
   describe "POST #create" do
     context "for a question" do
-      context "user votes" do
-        before { sign_in(user) }
-
-        it_behaves_like "Create Vote"
-      end
-
-      context "admin votes" do
-        before { sign_in(admin) }
-
-        it_behaves_like "Create Vote"
-      end
-
-      context "guest votes" do
-        it_behaves_like "Not create Vote"
-      end
-
-      context "author votes" do
-        before { sign_in(author) }
-
-        it_behaves_like "Not create Vote"
-      end
+      it_behaves_like "Create Vote by Roles"
 
       def set_votable
         question
@@ -42,27 +22,7 @@ RSpec.describe VotesController, type: :controller do
     end
 
     context "for an answer" do
-      context "user votes" do
-        before { sign_in(user) }
-
-        it_behaves_like "Create Vote"
-      end
-
-      context "admin votes" do
-        before { sign_in(admin) }
-
-        it_behaves_like "Create Vote"
-      end
-
-      context "guest votes" do
-        it_behaves_like "Not create Vote"
-      end
-
-      context "author votes" do
-        before { sign_in(author) }
-
-        it_behaves_like "Not create Vote"
-      end
+      it_behaves_like "Create Vote by Roles"
 
       def set_votable
         answer
@@ -79,27 +39,7 @@ RSpec.describe VotesController, type: :controller do
     let!(:question_vote){ create(:vote, votable: question, user: user) }
 
     context "for a question" do
-      context "user cancels his vote" do
-        before { sign_in(user) }
-
-        it_behaves_like "Delete Vote"
-      end
-
-      context "admin cancels his vote" do
-        before { sign_in(admin) }
-
-        it_behaves_like "Delete Vote"
-      end
-
-      context "guest cancels vote" do
-        it_behaves_like "Not delete Vote"
-      end
-
-      context "author cancels vote" do
-        before { sign_in(author) }
-
-        it_behaves_like "Not delete Vote"
-      end
+      it_behaves_like "Delete Vote by Roles"
 
       def set_votable
         question
@@ -111,27 +51,7 @@ RSpec.describe VotesController, type: :controller do
     end
 
     context "for an answer" do
-      context "user cancels his vote" do
-        before { sign_in(user) }
-
-        it_behaves_like "Delete Vote"
-      end
-
-      context "admin cancels his vote" do
-        before { sign_in(admin) }
-
-        it_behaves_like "Delete Vote"
-      end
-
-      context "guest cancels vote" do
-        it_behaves_like "Not delete Vote"
-      end
-
-      context "author cancels vote" do
-        before { sign_in(author) }
-
-        it_behaves_like "Not delete Vote"
-      end
+      it_behaves_like "Delete Vote by Roles"
 
       def set_votable
         answer
