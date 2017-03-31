@@ -6,7 +6,8 @@ class SubscriptionMailer < ApplicationMailer
   #   en.subscription_mailer.new_answer.subject
   #
   def new_answer(user, answer)
-    @greeting = "#{answer.body}, #{answer.question.title}"
+    @greeting = 'Hi'
+    @answer = answer
 
     mail to: user.email
   end

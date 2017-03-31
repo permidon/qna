@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: :votable do
+    resources :subscriptions, only: [:create, :destroy], shallow: true
     resources :comments, only: [:create]
     resources :answers, concerns: :votable, shallow: true do
       resources :comments, only: [:create]
