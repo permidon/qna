@@ -20,10 +20,14 @@
         p= f.submit 'Save Question'
     - if can?(:destroy, question)
       li= link_to 'Delete question', question, method: :delete, class: 'text-warning'
-    - if current_user && current_user.subscriptions.find_by(question: question)
-      li= link_to 'Unsubscribe', subscription_path(current_user.subscriptions.find_by(question: question)), method: :delete, class: 'text-warning'
-    - if current_user && !current_user.subscriptions.find_by(question: question)
-      li= link_to 'Subscribe', question_subscriptions_path(question), method: :post
+    li.subscription
+      - if user_signed_in?
+        - if current_user.subscriptions.find_by(question: question)
+          = link_to 'Unsubscribe', subscription_path(current_user.subscriptions.find_by(question: question)), method: :delete, remote: true, class: 'text-warning unsubscribe-link'
+          = link_to 'Subscribe', question_subscriptions_path(question), method: :post, remote: true, data: {type: :json}, class: 'subscribe-link', style: "display: none"
+        - else
+          = link_to 'Subscribe', question_subscriptions_path(question), method: :post, remote: true, data: {type: :json}, class: 'subscribe-link'
+          = link_to 'Unsubscribe', '#', method: :delete, remote: true, class: 'text-warning unsubscribe-link', style: "display: none"
   .comments
     p.small Comments:
     div class="comments-question-#{question.id}"
