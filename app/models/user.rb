@@ -35,12 +35,6 @@ class User < ApplicationRecord
     user
   end
 
-  def self.send_daily_digest
-    find_each.each do |user|
-      DailyMailer.digest(user).deliver_later
-    end
-  end
-
   def self.send_new_answer(answer)
     Subscription.where(question_id: answer.question_id).each do |subscription|
       SubscriptionMailer.new_answer(subscription.user, answer).deliver_later
