@@ -139,18 +139,4 @@ RSpec.describe User, type: :model do
       end
     end
   end
-
-  describe '.send_new_answer(answer)' do
-    let!(:users) { create_list(:user, 3) }
-    let!(:question) { create(:question, user: users[0]) }
-    let!(:subscription) { create(:subscription, question: question, user: users[1])}
-    let(:answer) { create(:answer, question: question)}
-
-    it 'should send new answer only to subscribed users' do
-      expect(SubscriptionMailer).to receive(:new_answer).with(users[0], answer).and_call_original
-      expect(SubscriptionMailer).to receive(:new_answer).with(users[1], answer).and_call_original
-      expect(SubscriptionMailer).to_not receive(:new_answer).with(users[2], answer).and_call_original
-      User.send_new_answer(answer)
-    end
-  end
 end

@@ -35,12 +35,6 @@ class User < ApplicationRecord
     user
   end
 
-  def self.send_new_answer(answer)
-    Subscription.where(question_id: answer.question_id).each do |subscription|
-      SubscriptionMailer.new_answer(subscription.user, answer).deliver_later
-    end
-  end
-
   def create_authorization(auth)
     self.authorizations.create(provider: auth['provider'], uid: auth['uid'].to_s )
   end
