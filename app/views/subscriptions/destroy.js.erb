@@ -1,0 +1,10 @@
+<% if @subscription.errors.present? %>
+  $('.error-messages').html('');
+  <% @subscription.errors.full_messages.each do |message| %>
+    $('.error-messages').html('<%= j message %>');
+  <% end %>
+<% else %>
+  $('.unsubscribe-link').hide()
+  $('.subscribe-link').show()
+  $('.error-messages').html('');
+<% end %>

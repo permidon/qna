@@ -29,4 +29,16 @@ RSpec.describe Answer, type: :model do
       expect(answer3).to be_best
     end
   end
+
+  describe "mail_answer" do
+    let(:user) { create(:user) }
+    let!(:question) { create(:question)}
+
+    it 'calls .mail_answer method after answer creation' do
+      answer = question.answers.new(body: '123', user: user)
+
+      expect(answer).to receive(:mail_answer)
+      answer.save
+    end
+  end
 end

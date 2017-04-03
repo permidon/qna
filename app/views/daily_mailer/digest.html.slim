@@ -1,0 +1,14 @@
+h1 Daily fresh questions digest
+p = @greeting + ", there are new questions for today:"
+table.table.table-condensed
+  thead
+    tr
+      td.text-center style="width:75px" Answers
+      td.text-center Title
+      td.text-center Question
+  tbody.question-list
+    - @questions.each do |question|
+      tr
+        td.title= question.answers.count
+        td.title= link_to "#{question.title}", question_url(question)
+        td.title= question.body.truncate(80)

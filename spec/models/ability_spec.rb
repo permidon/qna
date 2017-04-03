@@ -27,6 +27,7 @@ describe Ability do
 
     let(:user_question) { create :question, user: user }
     let(:other_question) { create :question, user: other }
+    let(:question) { create :question }
 
     let(:user_answer) { create :answer, question: user_question, user: user }
     let(:other_answer) { create :answer, question: user_question, user: other }
@@ -47,6 +48,9 @@ describe Ability do
     let(:user_answer_vote) { create :vote, votable: user_answer, user: user }
     let(:other_question_vote) { create :vote, votable: other_question, user: user }
     let(:other_answer_vote) { create :vote, votable: other_answer, user: user }
+
+    let(:user_subscription) { create :subscription, question: question, user: user }
+    let(:other_subscription) { create :subscription, question: question, user: other }
 
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
@@ -103,6 +107,13 @@ describe Ability do
       it { should be_able_to :all_but_me, user }
 
       it { should_not be_able_to :me, other }
+    end
+
+    context 'Subscription' do
+      it { should be_able_to :create, Subscription }
+      it { should be_able_to :destroy, user_subscription }
+
+      it { should_not be_able_to :destroy, other_subscription }
     end
   end
 end

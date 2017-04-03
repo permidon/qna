@@ -9,6 +9,7 @@ class Answer < ApplicationRecord
   validates :body, :user_id, presence: true
 
   after_create :publish_answer
+  after_create :mail_answer
 
   scope :helpful, -> { order(best: :desc).order(created_at: :asc) }
 
@@ -39,5 +40,9 @@ class Answer < ApplicationRecord
         attachments: attachments,
         question: self.question
     )
+  end
+
+  def mail_answer
+    QuestionSubscribeJob.perform_later(self)
   end
 end
