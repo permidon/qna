@@ -4,10 +4,11 @@ class Search < ApplicationRecord
   def self.search(source, query)
     return [] unless SOURCES.include? source
     return [] if query.blank?
+    request = ThinkingSphinx::Query.escape(query)
     if source == 'Everywhere'
-      ThinkingSphinx.search ThinkingSphinx::Query.escape(query)
+      ThinkingSphinx.search request
     else
-      source.classify.constantize.search ThinkingSphinx::Query.escape(query)
+      source.classify.constantize.search request
     end
   end
 end
