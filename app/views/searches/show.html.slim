@@ -1,0 +1,36 @@
+.container
+  - if @result.empty?
+    h5 style="text-align: center" Nothing found
+  - else
+    h5 style="text-align: center" We have found "#{@query}"
+    .result
+      - @result.each do |obj|
+        - if obj.class == Question
+          .result-question
+            ul.list-unstyled
+              li in the question:
+              li= link_to "#{obj.title}", question_path(obj)
+              li= obj.body
+        - if obj.class == Answer
+          .result-answer
+            ul.list-unstyled
+              li in the answer to the question:
+              li= link_to "#{obj.question.title}", question_path(obj.question)
+              li= "Answer: #{obj.body}"
+        - if obj.class == Comment
+          .result-comment
+            ul.list-unstyled
+              - if obj.commentable_type == "Question"
+                li in the comment to the question:
+                li= link_to "#{obj.commentable.title}", question_path(obj.commentable)
+              - else
+                li in the comment to the answer to the question:
+                li= link_to "#{obj.commentable.question.title}", question_path(obj.commentable.question)
+              li= "Comment: #{obj.body}"
+        - if obj.class == User
+          .result-user
+            ul.list-unstyled
+              li in the user email:
+              li= "#{obj.email}"
+
+
