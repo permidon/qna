@@ -2,24 +2,28 @@ require 'rails_helper'
 
 RSpec.describe SearchesController, type: :controller do
   describe 'GET #show' do
-    it 'renders show view' do
-      get :show, params: { source: 'Everywhere', query: '1234' }
-      expect(response).to render_template :show
+    context "with valid params" do
+      it_behaves_like "Searchable"
+
+      def do_request
+        get :show, params: { source: 'Everywhere', query: '1234' }
+      end
     end
 
-    it 'sends OK status' do
-      get :show, params: { source: 'Everywhere', query: '1234' }
-      expect(response).to have_http_status(200)
+    context "with invalid query" do
+      it_behaves_like "Searchable"
+
+      def do_request
+        get :show, params: { source: 'Everywhere', query: '' }
+      end
     end
 
-    it 'calls ThinkingSphinx .search method if source is Everywhere' do
-      expect(ThinkingSphinx).to receive(:search).with('1234')
-      get :show, params: { source: 'Everywhere', query: '1234' }
-    end
+    context "with invalid source" do
+      it_behaves_like "Searchable"
 
-    it 'calls Model .search method if source is plural name of Model' do
-      expect(Question).to receive(:search).with('1234')
-      get :show, params: { source: 'Questions', query: '1234' }
+      def do_request
+        get :show, params: { source: '', query: '1234' }
+      end
     end
   end
 end
