@@ -1,16 +1,15 @@
 header
   .navbar.navbar-default.navbar-static-top
     .container
-      button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse"
-        span.icon-bar
-        span.icon-bar
-
       = link_to 'Questions & Answers', questions_path, class: 'navbar-brand'
-      .navbar-collapse.collapse.navbar-responsive-collapse
-        ul.nav.navbar-nav.inline.pull-right
-          -if user_signed_in?
-            li= link_to "Sign Out", destroy_user_session_path, :method => :delete
-          -else
-            li= link_to "Sign In", new_user_session_path
-
-
+      ul.nav.navbar-nav.inline.pull-right
+        li
+          p = form_tag search_path, class: 'form-inline search-form', method: :get do
+            = select_tag :source,
+              options_for_select(%w(Everywhere Questions Answers Comments Users)), class: "form-control"
+            = text_field_tag :query, params[:query], class: "form-control", size: '40'
+            = submit_tag "Search", class: "btn btn-default"
+        -if user_signed_in?
+          li= link_to "Sign Out", destroy_user_session_path, :method => :delete
+        -else
+          li= link_to "Sign In", new_user_session_path
