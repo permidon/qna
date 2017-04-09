@@ -68,6 +68,9 @@ GEM
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
+    capistrano-sidekiq (0.10.0)
+      capistrano
+      sidekiq (>= 3.4)
     capybara (2.13.0)
       addressable
       mime-types (>= 1.16)
@@ -110,8 +113,8 @@ GEM
     doorkeeper (4.2.5)
       railties (>= 4.2)
     dotenv (1.0.2)
-    dotenv-deployment (0.3.0)
-      dotenv (~> 1.0)
+    dotenv-rails (1.0.2)
+      dotenv (= 1.0.2)
     erubis (2.7.0)
     execjs (2.7.0)
     factory_girl (4.8.0)
@@ -379,6 +382,7 @@ DEPENDENCIES
   capistrano-bundler
   capistrano-rails
   capistrano-rvm
+  capistrano-sidekiq
   capybara
   capybara-email
   capybara-webkit
@@ -389,7 +393,7 @@ DEPENDENCIES
   devise
   doorkeeper
   dotenv
-  dotenv-deployment
+  dotenv-rails
   factory_girl_rails
   gon
   jbuilder (~> 2.5)

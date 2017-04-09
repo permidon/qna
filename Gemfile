@@ -39,7 +39,7 @@ gem 'whenever'
 gem 'mysql2'
 gem 'thinking-sphinx'
 gem 'dotenv'
-gem 'dotenv-deployment', require: 'dotenv/deployment'
+gem 'dotenv-rails', require: 'dotenv/rails'
 
 group :development, :test do
   gem 'byebug', platform: :mri
@@ -62,6 +62,7 @@ group :development do
   gem 'capistrano-bundler', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
+  gem 'capistrano-sidekiq', require: false
 end
 
 group :test do
