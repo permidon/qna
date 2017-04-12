@@ -1,6 +1,6 @@
 require 'acceptance/acceptance_helper'
 
-describe 'Questions API' do do
+describe 'Questions API' do
   let(:access_token) { create(:access_token) }
 
   describe 'GET /index' do

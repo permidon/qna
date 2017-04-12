@@ -1,10 +1,10 @@
 div id="answer-#{answer.id}"
-  - cache answer do
-    ul.list-unstyled
-      - if answer.persisted?
-        li= 'Best Answer' if answer.best?
+  ul.list-unstyled
+    - if answer.persisted?
+      li= 'Best Answer' if answer.best?
+      - cache answer do
         li.lead= answer.body
-    p.small Attachments:
+  p.small Attachments:
   div
     - answer.attachments.each do |a|
       .attachment id="attachment-#{a.id}"
