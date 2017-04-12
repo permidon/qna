@@ -1,15 +1,16 @@
-h3 All questions
+- cache collection_cache_key_for :question do
+  h3 All questions
 
-.col-lg-9
-  table.table.table-condensed
-    thead
-      tr
-        td.text-center style="width:75px" Rating
-        td.text-center style="width:75px" Answers
-        td.text-center Questions
-    tbody.question-list
-      - @questions.each do |question|
-        = render 'questions/short_question', question: question
+  .col-lg-9
+    table.table.table-condensed
+      thead
+        tr
+          td.text-center style="width:75px" Rating
+          td.text-center style="width:75px" Answers
+          td.text-center Questions
+      tbody.question-list
+        - @questions.each do |question|
+          = render 'questions/short_question', question: question
 
 .col-lg-3
   - if can?(:create, Question)

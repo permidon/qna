@@ -1,7 +1,8 @@
 .full-question id="question-#{question.id}"
-  h2.page-title style="text-align: center" = question.title
-  h3.lead= question.body
-  p.small Attachments:
+  - cache question do
+    h2.page-title style="text-align: center" = question.title
+    h3.lead= question.body
+    p.small Attachments:
   div
     - question.attachments.each do |a|
       .attachment id="attachment-#{a.id}"

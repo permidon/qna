@@ -41,6 +41,8 @@ gem 'thinking-sphinx'
 gem 'dotenv'
 gem 'dotenv-rails', require: 'dotenv/rails'
 gem 'unicorn'
+gem 'redis-rails'
+
 
 group :development, :test do
   gem 'byebug', platform: :mri
