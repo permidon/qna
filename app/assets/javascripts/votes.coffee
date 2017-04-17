@@ -29,9 +29,7 @@ ready = ->
       $(".vote-alert").html("<p>" + value + "</p>")
     $('.error-messages').html(xhr.responseJSON) if error = 'Forbidden'
 
-
-
-  App.cable.subscriptions.create('VotesChannel', {
+  App.votecable = App.cable.subscriptions.create('VotesChannel', {
     connected: ->
       @perform 'follow'
     ,
@@ -41,6 +39,6 @@ ready = ->
       vote_div = '.' + 'vote-' + vote.votable_type.toLowerCase() + '-' + vote.votable_id
       $(vote_div + " .rating" + " .rating-value").html("<p> Rating: " + rating + "</p>")
       $(document).ready(ready)
-  })
+  }) unless App.votecable
 
 $(document).on('turbolinks:load', ready)

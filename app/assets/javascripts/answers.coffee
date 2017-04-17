@@ -9,7 +9,7 @@ ready = ->
     answer_id = $(@).data('answerId')
     $('form#edit-answer-' + answer_id).show()
 
-  App.cable.subscriptions.create('AnswersChannel', {
+  App.anscable = App.cable.subscriptions.create('AnswersChannel', {
     connected: ->
       question_id = $(".full-question").attr('id')
       @perform 'follow', question_id: question_id
@@ -22,6 +22,6 @@ ready = ->
         question: data.question
       )
       $(document).ready(ready)
-  })
+  }) unless App.anscable
 
 $(document).on('turbolinks:load', ready)

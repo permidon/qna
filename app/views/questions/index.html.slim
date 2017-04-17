@@ -1,17 +1,17 @@
 - cache collection_cache_key_for :question do
   h3 All questions
 
-  .col-lg-9
+  .col-lg-10
     table.table.table-condensed
       thead
         tr
-          td.text-center style="width:75px" Rating
-          td.text-center style="width:75px" Answers
+          td.text-center style="width:80px" Rating
+          td.text-center style="width:80px" Answers
           td.text-center Questions
       tbody.question-list
         - @questions.each do |question|
           = render 'questions/short_question', question: question
 
-.col-lg-3
+.col-lg-2
   - if can?(:create, Question)
-    = link_to 'Ask Question', new_question_path, class: 'btn btn-success btn-sm pull-right'
+    = link_to 'Ask Question', new_question_path, class: 'btn btn-success btn pull-right'

@@ -1,15 +1,17 @@
 header
   .navbar.navbar-default.navbar-static-top
     .container
-      = link_to 'Questions & Answers', questions_path, class: 'navbar-brand'
-      ul.nav.navbar-nav.inline.pull-right
-        li
-          p = form_tag search_path, class: 'form-inline search-form', method: :get do
-            = select_tag :source,
-              options_for_select(%w(Everywhere Questions Answers Comments Users)), class: "form-control"
-            = text_field_tag :query, params[:query], class: "form-control", size: '40'
-            = submit_tag "Search", class: "btn btn-default"
-        -if user_signed_in?
-          li= link_to "Sign Out", destroy_user_session_path, :method => :delete
-        -else
-          li= link_to "Sign In", new_user_session_path
+      .col-lg-4
+        = link_to 'Questions & Answers', questions_path, class: 'navbar-brand'
+      .col-lg-6
+        p = form_tag search_path, class: 'form-inline search-form', method: :get do
+          = select_tag :source,
+            options_for_select(%w(Everywhere Questions Answers Comments Users)), class: "form-control"
+          = text_field_tag :query, params[:query], class: "form-control", size: '40'
+          = submit_tag "Search", class: "btn btn-default"
+      .col-lg-2
+        ul.nav.navbar-nav.inline.pull-right
+          -if user_signed_in?
+            li= link_to "Sign Out", destroy_user_session_path, :method => :delete
+          -else
+            li= link_to "Sign In", new_user_session_path

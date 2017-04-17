@@ -23,7 +23,7 @@ ready = ->
       $(".comment-errors").html("<p>" + index + ' ' + value + "</p>")
     $('.error-messages').html(xhr.responseJSON) if error = 'Forbidden'
 
-  App.cable.subscriptions.create('CommentsChannel', {
+  App.comcable = App.cable.subscriptions.create('CommentsChannel', {
     connected: ->
       @perform 'follow'
     ,
@@ -32,6 +32,6 @@ ready = ->
       comment = "<p class='small'>" + data.body + "</p>"
       $(comment_parent).append(comment)
       $(document).ready(ready)
-  })
+  }) unless App.comcable
 
 $(document).on('turbolinks:load', ready)
