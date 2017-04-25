@@ -43,7 +43,6 @@ gem 'dotenv-rails', require: 'dotenv/rails'
 gem 'unicorn'
 gem 'redis-rails'
 
-
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
@@ -73,6 +72,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'capybara-email'
   gem 'json_spec'
+  gem 'fuubar'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
